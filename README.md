@@ -2,113 +2,70 @@
 
 
 
-Gestionar un zoológico involucra la recopilación y manejo de diversos datos con el fin de asegurar el buen cuidado de los animales, la protección de los visitantes y el eficaz desarrollo de todas las actividades.
+Un zoológico es una instalación diseñada para albergar y exhibir una variedad de animales para el entretenimiento, la educación y la conservación; este, sería una compleja infraestructura física y digital que involucra sistemas tecnológicos interconectados para gestionar eficientemente todas las operaciones relacionadas con la exhibición, el cuidado, la conservación y la experiencia del visitante. 
 
-### Animales :sparkles:
+1. #### :panda_face: **Datos sobre los Animales** :panda_face:
 
-Información de identificación: 
+   Necesitas un sistema que almacene información sobre cada animal:
 
-- Nombre
-- número de identificación
-- especie
-- género
-- Fecha de nacimiento o edad estimada
-- Origen y fecha de llegada al zoológico. 
+   - cuántos años tiene, 
+   - como qué tipo es,
+   - si está sano o enfermo,
+   - su historial médico
+   - lo que necesita para estar bien. 
 
-### Información médica :sparkles:
+   ***Esto ayuda a los cuidadores y veterinarios a cuidarlos mejor y a mantener un registro de su reproducción.***
 
--  Historial de salud
-- tratamientos médicos
-- vacunas
-- exámenes
-- Dieta y necesidades alimenticias
-- Comportamiento y necesidades específicas del hábitat. 
+   
 
-### Empleados :sparkles:
+2. ####  :leaves: **Controlando  Habitads** :leaves:
 
-- Nombres
-- roles y funciones 
-- Información de contacto
-- Horarios y turnos de trabajo
-- Salarios y beneficios. 
-- Certificaciones y capacitaciones relevantes
-- Evaluaciones de desempeño y retroalimentación. 
+    Debes crear un sistema que ajuste automáticamente a:
 
-### Visitantes :sparkles:
+   -  la temperatura,
+   -  humedad 
+   - y otras condiciones de los lugares donde viven los animales. 
 
-- Datos de registro: 
-- Nombre
-- edad
-- número de visitante
-- Fechas de visita y duración. 
-- Tipos de entradas adquiridas (boletos regulares, pases de temporada, etc.)
-- Participación en actividades o interacciones especiales
-- Encuestas de satisfacción y retroalimentación.
+   ***Esto es para que se sientan como en su hábitat natural. Usarías sensores y dispositivos que funcionan con software para que los hogares sean cómodos y seguros.***
 
-### Instalaciones y Hábitats :sparkles:
+   
 
-- Detalles de las jaulas y áreas de exhibición
-- Dimensiones y características del hábitat
-- Condiciones ambientales (temperatura, humedad, iluminación, etc.)
-- Equipos y enriquecimiento ambiental.
+3. #### :person_with_blond_hair: **Manejo de Visitantes** :person_with_blond_hair:
 
-### Alimentación y Cuidados :sparkles:
+   Se debe organizar cómo los visitantes entran, por lo tanto, se debe crear un sistema donde las personas puedan comprar entradas por internet o en el lugar. También pones un sistema para escanear las entradas en las puertas, para asegurarte de que todos tengan una visita agradable.
 
-Registros de alimentación: 
+   
 
-- Tipos y cantidades de alimentos proporcionados
-- Programa de enriquecimiento y actividades de cuidado
-- Historial médico y registros de tratamientos.
+4. #### :ledger: **Reservas para Eventos y Aprendizaje** :ledger:
 
-### Eventos y Programas :sparkles:
+   Si el zoológico ofrece clases o eventos, podrías hacer una manera en línea para que las personas se registren y paguen por adelantado.
 
-Calendario de eventos: 
+   
 
-- Shows
-- charlas educativas
-- actividades especiales
-- Horarios y lugares de eventos
-- Participantes (animales, empleados, invitados especiales)
-- Temáticas y objetivos de los eventos.
+5. #### :information_source: **Información para los Visitantes** :information_source:
 
-### Conservación y Educación :sparkles:
+   Se puede hacer una aplicación para celulares o pones máquinas donde los visitantes pueden aprender sobre los animales, las exhibiciones y los programas educativos. Podrían usar códigos QR para obtener información actualizada.
 
-- Programas educativos ofrecidos
-- Participación en programas de conservación
-- Impacto en la comunidad y esfuerzos de divulgación
+   
 
-### Seguridad y Mantenimiento :sparkles:
+6. #### :lock: **Manteniendo Seguro el Zoológico** :lock:
 
-Sistemas de seguridad: 
+   Debes establecer cámaras y sistemas de monitoreo para asegurarte de que todos estén seguros, tanto los visitantes como los animales. Además, podrías poner sistemas para limitar el acceso a áreas especiales y para actuar en caso de emergencias.
 
-- Cámaras, alarmas
-- protocolos de emergencia
+   
 
-Registros de mantenimiento: 
+7. #### :moneybag: **Negocios dentro del Zoológico** :moneybag:
 
-- Tareas programadas y no programadas
-- Equipamiento de seguridad y mantenimiento.
+   - Si hay lugares donde las personas pueden comer, podrías crear un sistema para ordenar comida y hacer que se entregue de manera eficiente.
 
-### Finanzas :sparkles:
+   - Si hay tiendas, podrías hacer un sistema para manejar las ventas y el inventario de productos.
 
-Ingresos: 
+8. #### :money_with_wings: **Donaciones y Patrocinios** :money_with_wings:
 
-- Ventas de entradas
-- tiendas
-- cafeterías
-- donaciones. 
+   Si el zoológico depende de donaciones, podrías hacer un sistema para rastrearlas y reconocer a las personas que contribuyen. También podrías diseñar un sistema para quienes patrocinan.
 
-Gastos:
+   
 
-- Salarios
-- suministros
-- mantenimiento
-- marketing
-- Informes financieros y análisis de costos.
+9. #### :information_desk_person: **Organizando el Personal** :information_desk_person:
 
-### Información de Administración :sparkles:
-
-- Reportes de salud de los animales
-- Análisis de visitantes y afluencia
-- Reportes financieros y de desempeño
-- Documentación legal y licencias.
+   Para que todos los trabajadores sepan cuándo trabajar, podrías crear un sistema que programe turnos y que mida las horas que trabajan.
