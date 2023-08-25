@@ -1,71 +1,89 @@
-# :sparkles: Zoológico_Campus :sparkles:
+# Proyecto Zoológico Campus:sparkles:
+
+### ¿Qué es un zoológico?
+
+Un zoológico es un lugar donde se cuidan, rehabilitan y exhiben animales con fines de entretenimiento, educación y conservación. Para gestionar  eficientemente todas las operaciones relacionadas con los animales, su  cuidado, las exhibiciones y la experiencia de los visitantes, se  necesita una infraestructura física y digital interconectada.
+
+### Nuestro enfoque
+
+Al administrar un zoológico, abordamos múltiples aspectos cruciales para un funcionamiento eficiente y una experiencia excepcional. Esto incluye:
+
+1. #### **Datos sobre los Animales**   :bear:
+
+   - Almacena detalles vitales de cada animal.
+   - Ayuda a cuidadores y veterinarios a brindar atención precisa.
+
+2. #### **Controlando Hábitats**   :national_park:
+
+   - Ajusta automáticamente las condiciones de los hábitats.
+   - Proporciona un ambiente natural y seguro para los animales.
+
+3. #### **Manejo de Visitantes**  :family_man_woman_boy_boy:
+
+   - Facilita la compra y entrada de visitantes.
+   - Mejora la experiencia de los visitantes y gestiona la afluencia.
+
+4. #### **Reservas para Eventos y Aprendizaje**  :tickets:
+
+   - Registra inscripciones en clases y eventos.
+   - Organiza actividades especiales de manera eficiente.
+
+5. #### **Información para los Visitantes**  :information_desk_person:
+
+   - Ofrece detalles sobre animales y exhibiciones.
+   - Enriquece la experiencia de los visitantes.
+
+6. #### **Mantenimiento de la Seguridad**  :lock:
+
+   - Monitorea y asegura la seguridad de todos.
+   - Previene incidentes y actúa en emergencias.
+
+7. #### **Operaciones Comerciales**  :moneybag:
+
+   - Gestiona pedidos de alimentos y tiendas.
+   - Mejora la eficiencia y la satisfacción de los visitantes.
+
+8. #### **Organización del Personal** :man_factory_worker:
+
+   - Programa turnos y registra horas trabajadas.
+   - Optimiza la planificación del personal.
 
 
 
-Un zoológico es una instalación diseñada para albergar y exhibir una variedad de animales para el entretenimiento, la educación y la conservación; este, sería una compleja infraestructura física y digital que involucra sistemas tecnológicos interconectados para gestionar eficientemente todas las operaciones relacionadas con la exhibición, el cuidado, la conservación y la experiencia del visitante. 
+Al observar la relevancia de estos aspectos, hemos optado por  dirigir nuestra atención hacia la identificación, mitigación de riesgos, y la la capacidad de abordar eficazmente cualquier desafío que pueda surgir en las instalaciones y hábitats del zoológico.
 
-1. #### :panda_face: **Datos sobre los Animales** :panda_face:
 
-   Necesitas un sistema que almacene información sobre cada animal:
 
-   - cuántos años tiene, 
-   - como qué tipo es,
-   - si está sano o enfermo,
-   - su historial médico
-   - lo que necesita para estar bien. 
+## Sistema de Gestión de Mantenimiento y Detección de Problemas :hammer::gear:
 
-   ***Esto ayuda a los cuidadores y veterinarios a cuidarlos mejor y a mantener un registro de su reproducción.***
+El Sistema de Gestión de Mantenimiento y Detección de Problemas para Zoológicos es un sistema diseñado para ayudar a los zoológicos en la planificación, seguimiento y resolución de mantenimientos, así como en la detección temprana y gestión eficiente de problemas en las diferentes áreas del zoológico. 
 
-   
 
-2. ####  :leaves: **Controlando  Habitads** :leaves:
 
-    Debes crear un sistema que ajuste automáticamente a:
+## Características
 
-   -  la temperatura,
-   -  humedad 
-   - y otras condiciones de los lugares donde viven los animales. 
+- **Gestión de Áreas:** Registre y administre información detallada sobre las áreas del zoológico, incluyendo nombres, descripciones, horarios de mantenimiento programado y capacidad de visitantes.
 
-   ***Esto es para que se sientan como en su hábitat natural. Usarías sensores y dispositivos que funcionan con software para que los hogares sean cómodos y seguros.***
+- **Registro de Mantenimientos:** Lleve un registro exhaustivo de los mantenimientos realizados en las áreas del zoológico. Incluya información sobre el área afectada, fecha del mantenimiento, descripción del trabajo y personal responsable.
 
-   
+- **Seguimiento de Incidentes:** Registre y supervise cualquier incidente o problema que ocurra en relación con las áreas del zoológico. Mantenga un historial de fechas, descripciones y acciones tomadas para resolver los incidentes.
 
-3. #### :person_with_blond_hair: **Manejo de Visitantes** :person_with_blond_hair:
+- **Auditorías de Áreas:** Realice auditorías periódicas de áreas y procesos para garantizar el cumplimiento de los estándares de mantenimiento y seguridad. Documente observaciones y recomendaciones para mejoras.
 
-   Se debe organizar cómo los visitantes entran, por lo tanto, se debe crear un sistema donde las personas puedan comprar entradas por internet o en el lugar. También pones un sistema para escanear las entradas en las puertas, para asegurarte de que todos tengan una visita agradable.
+- **Notificaciones Automáticas:** Reciba alertas automáticas sobre eventos importantes, como mantenimientos próximos, recordatorios de auditorías y cambios en los horarios de mantenimiento. Manténgase informado en tiempo real.
 
-   
+  
 
-4. #### :ledger: **Reservas para Eventos y Aprendizaje** :ledger:
+## Cómo Ayuda al Zoológico
 
-   Si el zoológico ofrece clases o eventos, podrías hacer una manera en línea para que las personas se registren y paguen por adelantado.
+El Sistema de Gestión de Mantenimiento y Detección de Problemas ofrece varias ventajas clave para el zoológico:
 
-   
+- **Eficiencia en el Mantenimiento:** El zoológico puede programar y realizar mantenimientos de manera planificada, evitando interrupciones no planificadas en la operación diaria.
 
-5. #### :information_source: **Información para los Visitantes** :information_source:
+- **Detección Temprana de Problemas:** Los incidentes y problemas pueden ser identificados y abordados en etapas tempranas, minimizando su impacto y reduciendo el riesgo para visitantes, personal y animales.
 
-   Se puede hacer una aplicación para celulares o pones máquinas donde los visitantes pueden aprender sobre los animales, las exhibiciones y los programas educativos. Podrían usar códigos QR para obtener información actualizada.
+- **Historial Detallado:** La base de datos mantiene un registro histórico detallado de todos los mantenimientos, incidentes y auditorías, lo que permite un seguimiento completo de la gestión de áreas.
 
-   
+- **Cumplimiento de Estándares:** Las auditorías programadas garantizan que las áreas del zoológico cumplan con los estándares de mantenimiento y seguridad, creando un entorno más seguro y atractivo para los visitantes.
 
-6. #### :lock: **Manteniendo Seguro el Zoológico** :lock:
-
-   Debes establecer cámaras y sistemas de monitoreo para asegurarte de que todos estén seguros, tanto los visitantes como los animales. Además, podrías poner sistemas para limitar el acceso a áreas especiales y para actuar en caso de emergencias.
-
-   
-
-7. #### :moneybag: **Negocios dentro del Zoológico** :moneybag:
-
-   - Si hay lugares donde las personas pueden comer, podrías crear un sistema para ordenar comida y hacer que se entregue de manera eficiente.
-
-   - Si hay tiendas, podrías hacer un sistema para manejar las ventas y el inventario de productos.
-
-8. #### :money_with_wings: **Donaciones y Patrocinios** :money_with_wings:
-
-   Si el zoológico depende de donaciones, podrías hacer un sistema para rastrearlas y reconocer a las personas que contribuyen. También podrías diseñar un sistema para quienes patrocinan.
-
-   
-
-9. #### :information_desk_person: **Organizando el Personal** :information_desk_person:
-
-   Para que todos los trabajadores sepan cuándo trabajar, podrías crear un sistema que programe turnos y que mida las horas que trabajan.
+  
