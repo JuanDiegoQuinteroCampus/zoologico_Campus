@@ -4,6 +4,10 @@
 
 Un zoológico es un lugar donde se cuidan, rehabilitan y exhiben animales con fines de entretenimiento, educación y conservación. Para gestionar  eficientemente todas las operaciones relacionadas con los animales, su  cuidado, las exhibiciones y la experiencia de los visitantes, se  necesita una infraestructura física y digital interconectada.
 
+
+<img src="assets/img/zoo.jpg">
+
+
 ### Nuestro enfoque
 
 Al administrar un zoológico, abordamos múltiples aspectos cruciales para un funcionamiento eficiente y una experiencia excepcional. Esto incluye:
@@ -58,6 +62,8 @@ Al observar la relevancia de estos aspectos, hemos optado por  dirigir nuestra a
 
 El Sistema de Gestión de Mantenimiento y Detección de Problemas para Zoológicos es un sistema diseñado para ayudar a los zoológicos en la planificación, seguimiento y resolución de mantenimientos, así como en la detección temprana y gestión eficiente de problemas en las diferentes áreas del zoológico. 
 
+
+<img src="assets/img/db.png">
 
 
 ## Características
