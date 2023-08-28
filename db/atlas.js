@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import {MongoClient} from 'mongodb';
 dotenv.config("../");
-export default async function con() {
+async function con() {
     try {
         const uri =`mongodb+srv://${process.env.ATLAS_USER}:${process.env.ATLAS_PASSWORD}@cluster0.zth9y42.mongodb.net/${process.env.ATLAS_DB}`
         const options ={
@@ -14,3 +14,4 @@ export default async function con() {
         return {status:500, message:error}
     }
 }
+export {con}
