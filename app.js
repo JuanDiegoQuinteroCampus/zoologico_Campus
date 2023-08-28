@@ -6,6 +6,7 @@ import appEmpleados from "./routers/empleados.js";
 import appHabitats from "./routers/habitats.js";
 import appIncidentes from "./routers/incidentes.js";
 import appMantenimiento from "./routers/mantenimiento.js";
+import appTipoAnimales from "./routers/tipo_animales.js";
 dotenv.config();
 
 const app = express();
@@ -17,7 +18,8 @@ app.use("/areas", appAreas);
 app.use("/empleados", appEmpleados);
 app.use("/habitats", appHabitats);
 app.use("/incidentes", appIncidentes);
-app.use("/mantenimientos", appMantenimiento)
+app.use("/mantenimientos", appMantenimiento);
+app.use("/tipoAnimales", appTipoAnimales);
 
 app.listen(config, ()=> {
     console.log(`http://${config.hostname}:${config.port}`);
