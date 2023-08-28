@@ -1,7 +1,13 @@
 import express  from "express";
 import dotenv from "dotenv";
 import appAnimales from './routers/animales.js';
-import appAreas from './routers/areas.js'
+import appAreas from './routers/areas.js';
+import appEmpleados from "./routers/empleados.js";
+import appHabitats from "./routers/habitats.js";
+import appIncidentes from "./routers/incidentes.js";
+import appMantenimiento from "./routers/mantenimiento.js";
+import appTipoAnimales from "./routers/tipo_animales.js";
+import appVisitantes from "./routers/visitantes.js";
 dotenv.config();
 
 const app = express();
@@ -10,6 +16,12 @@ let config = JSON.parse(process.env.MY_CONFIG);
 app.use(express.json());
 app.use("/animales", appAnimales);
 app.use("/areas", appAreas);
+app.use("/empleados", appEmpleados);
+app.use("/habitats", appHabitats);
+app.use("/incidentes", appIncidentes);
+app.use("/mantenimientos", appMantenimiento);
+app.use("/tipoAnimales", appTipoAnimales);
+app.use("/visitantes", appVisitantes);
 
 app.listen(config, ()=> {
     console.log(`http://${config.hostname}:${config.port}`);
