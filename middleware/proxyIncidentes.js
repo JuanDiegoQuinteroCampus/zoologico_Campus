@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import {plainToClass, classToPlain} from 'class-transformer';
 import {validate} from 'class-validator';
-import { DTO } from "../limit/token.js";
+import { DTO } from "../helpers/token.js";
 import { Router } from "express";
 import express from "express";
 import { Incidentes } from '../dtocontroller/incidentes.js';
@@ -48,7 +48,7 @@ proxyIncidentes.use(async (req, res, next) => {
         fecha_incidente: new Date(payload.fecha_incidente)
     };
     console.log(payloadDateObjects);
-    console.log(Clone);
+
 
     const Verify = JSON.stringify(Clone).replace(/\s+/g, '') === JSON.stringify(payloadDateObjects).replace(/\s+/g, '');
 

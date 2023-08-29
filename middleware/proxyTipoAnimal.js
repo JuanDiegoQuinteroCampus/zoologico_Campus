@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import {plainToClass, classToPlain} from 'class-transformer';
 import {validate} from 'class-validator';
-import { DTO } from "../limit/token.js";
+import { DTO } from "../helpers/token.js";
 import { Router } from "express";
 import express from "express";
 
@@ -38,9 +38,9 @@ middlewareVerify.use((req,res,next) => {
     let {payload} = req.data;
     const { iat, exp, ...newPayload } = payload;
     payload = newPayload;
-    console.log(payload);
+   
     let Clone = JSON.stringify(classToPlain(plainToClass(DTO("tipoAnimales").class, {}, { ignoreDecorators: true })));
-    console.log(Clone);
+
     let Verify = Clone === JSON.stringify(payload);
     
     if (!Verify) {
