@@ -1,11 +1,14 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../db/atlas.js";
+import { DTOData, proxyBodegas, middlewareVerify } from "../middleware/proxyBodegas.js";
+import { LimitQuery } from "../helpers/config.js";
 
 const appBodegas = express();
 appBodegas.use(express.json());
+appBodegas.use(LimitQuery());
 
-appBodegas.get("/", async (req, res) => {
+appBodegas.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
     let collection = db.collection("bodegas");
     let result = await collection.find({}).toArray();
@@ -19,14 +22,14 @@ appBodegas.get("/", async (req, res) => {
     }
 });
 
-appBodegas.post("/post", async (req, res) => {
+appBodegas.post("/post", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
     try {
         const db = await con();
         const collection = db.collection('bodegas');
         await collection.insertOne({...req.body});
         res.status(201).json({
             satus: 201,
-            message: "Se Insertó la Data Exitosamente :)"
+            message: "Bodega Insertada Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -37,7 +40,7 @@ appBodegas.post("/post", async (req, res) => {
     }
 });
 
-appBodegas.put("/update/:id", async (req, res) => {
+appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -45,7 +48,7 @@ appBodegas.put("/update/:id", async (req, res) => {
         const updateData = req.body;
         let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Data Exitosamente Actualizada :)" }):
+            res.send({ message: "Bodega Exitosamente Actualizada :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -57,7 +60,7 @@ appBodegas.put("/update/:id", async (req, res) => {
     }
 });
 
-appBodegas.delete("/delete/:id", async (req, res) => {
+appBodegas.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -67,7 +70,7 @@ appBodegas.delete("/delete/:id", async (req, res) => {
         });
         res.status(201).json({
             satus: 201,
-            message: "Deleted Data :)"
+            message: "Bodega Eliminada Exitosamente :)"
         });
     } catch (error) {
         console.error(error);

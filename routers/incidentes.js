@@ -1,11 +1,14 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../db/atlas.js";
+import { DTOData, proxyIncidentes, middlewareVerify } from "../middleware/proxyIncidentes.js";
+import { LimitQuery } from "../helpers/config.js";
 
 const appIncidentes = express();
 appIncidentes.use(express.json());
+appIncidentes.use(LimitQuery());
 
-appIncidentes.get("/", async (req, res) => {
+appIncidentes.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
     let collection = db.collection("incidentes");
     let result = await collection.find({}).toArray();
@@ -19,7 +22,7 @@ appIncidentes.get("/", async (req, res) => {
     }
 });
 
-appIncidentes.post("/post", async (req, res) => {
+appIncidentes.post("/post", middlewareVerify, proxyIncidentes, DTOData, async (req, res) => {
     try {
         const db = await con();
         const collection = db.collection('incidentes');
@@ -30,7 +33,7 @@ appIncidentes.post("/post", async (req, res) => {
         await collection.insertOne(insertDocument);
         res.status(201).json({
             satus: 201,
-            message: "Se Insertó la Data Exitosamente :)"
+            message: "Incidente Registrado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -41,7 +44,7 @@ appIncidentes.post("/post", async (req, res) => {
     }
 });
 
-appIncidentes.put("/update/:id", async (req, res) => {
+appIncidentes.put("/update/:id", middlewareVerify, proxyIncidentes, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -54,7 +57,7 @@ appIncidentes.put("/update/:id", async (req, res) => {
         }
         let result = await collection.updateOne({ _id: _id }, updateData) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Data Exitosamente Actualizada :)" }):
+            res.send({ message: "Incidente Exitosamente Actualizado :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -66,7 +69,7 @@ appIncidentes.put("/update/:id", async (req, res) => {
     }
 });
 
-appIncidentes.delete("/delete/:id", async (req, res) => {
+appIncidentes.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -76,7 +79,7 @@ appIncidentes.delete("/delete/:id", async (req, res) => {
         });
         res.status(201).json({
             satus: 201,
-            message: "Deleted Data :)"
+            message: "Incidente ELiminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);

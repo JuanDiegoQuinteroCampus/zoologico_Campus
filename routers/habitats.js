@@ -1,11 +1,14 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../db/atlas.js";
+import { DTOData, proxyHabitats, middlewareVerify } from "../middleware/proxyHabitats.js";
+import { LimitQuery } from "../helpers/config.js";
 
 const appHabitats = express();
 appHabitats.use(express.json());
+appHabitats.use(LimitQuery());
 
-appHabitats.get("/", async (req, res) => {
+appHabitats.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
     let collection = db.collection("habitats");
     let result = await collection.find({}).toArray();
@@ -19,14 +22,14 @@ appHabitats.get("/", async (req, res) => {
     }
 });
 
-appHabitats.post("/post", async (req, res) => {
+appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
     try {
         const db = await con();
         const collection = db.collection('habitats');
         await collection.insertOne({...req.body});
         res.status(201).json({
             satus: 201,
-            message: "Se Insertó la Data Exitosamente :)"
+            message: "Habitat Insertado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -37,7 +40,7 @@ appHabitats.post("/post", async (req, res) => {
     }
 });
 
-appHabitats.put("/update/:id", async (req, res) => {
+appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -45,7 +48,7 @@ appHabitats.put("/update/:id", async (req, res) => {
         const updateData = req.body;
         let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Data Exitosamente Actualizada :)" }):
+            res.send({ message: "Habitat Exitosamente Actualizado :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -57,7 +60,7 @@ appHabitats.put("/update/:id", async (req, res) => {
     }
 });
 
-appHabitats.delete("/delete/:id", async (req, res) => {
+appHabitats.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -67,7 +70,7 @@ appHabitats.delete("/delete/:id", async (req, res) => {
         });
         res.status(201).json({
             satus: 201,
-            message: "Deleted Data :)"
+            message: "Habitat Eliminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);

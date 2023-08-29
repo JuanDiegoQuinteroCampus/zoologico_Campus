@@ -1,11 +1,14 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../db/atlas.js";
+import { DTOData, proxyMantenimientos, middlewareVerify } from "../middleware/proxyMantenimientos.js";
+import { LimitQuery } from "../helpers/config.js";
 
 const appMantenimiento = express();
 appMantenimiento.use(express.json());
+appMantenimiento.use(LimitQuery());
 
-appMantenimiento.get("/", async (req, res) => {
+appMantenimiento.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
     let collection = db.collection("mantenimiento");
     let result = await collection.find({}).toArray();
@@ -19,7 +22,7 @@ appMantenimiento.get("/", async (req, res) => {
     }
 });
 
-appMantenimiento.post("/post", async (req, res) => {
+appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
     try {
         const db = await con();
         const collection = db.collection('mantenimiento');
@@ -30,7 +33,7 @@ appMantenimiento.post("/post", async (req, res) => {
         await collection.insertOne(insertDocument);
         res.status(201).json({
             satus: 201,
-            message: "Se Insertó la Data Exitosamente :)"
+            message: "Mantenimiento Registrado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -41,7 +44,7 @@ appMantenimiento.post("/post", async (req, res) => {
     }
 });
 
-appMantenimiento.put("/update/:id", async (req, res) => {
+appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -54,7 +57,7 @@ appMantenimiento.put("/update/:id", async (req, res) => {
         }
         let result = await collection.updateOne({ _id: _id }, updateData) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Data Exitosamente Actualizada :)" }):
+            res.send({ message: "Mantenimiento Exitosamente Actualizado :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -66,7 +69,7 @@ appMantenimiento.put("/update/:id", async (req, res) => {
     }
 });
 
-appMantenimiento.delete("/delete/:id", async (req, res) => {
+appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -76,7 +79,7 @@ appMantenimiento.delete("/delete/:id", async (req, res) => {
         });
         res.status(201).json({
             satus: 201,
-            message: "Deleted Data :)"
+            message: "Mantenimiento Eliminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);

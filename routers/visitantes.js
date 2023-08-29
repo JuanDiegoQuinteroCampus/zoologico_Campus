@@ -1,11 +1,14 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../db/atlas.js";
+import { DTOData, proxyVisitantes, middlewareVerify } from "../middleware/proxyVisitantes.js";
+import { LimitQuery } from "../helpers/config.js";
 
 const appVisitantes = express();
 appVisitantes.use(express.json());
+appVisitantes.use(LimitQuery());
 
-appVisitantes.get("/", async (req, res) => {
+appVisitantes.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
     let collection = db.collection('visitantes');
     let result = await collection.find({}).toArray();
@@ -19,14 +22,14 @@ appVisitantes.get("/", async (req, res) => {
     }
 });
 
-appVisitantes.post("/post", async (req, res) => {
+appVisitantes.post("/post", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
     try {
         const db = await con();
         const collection = db.collection('visitantes');
         await collection.insertOne({...req.body});
         res.status(201).json({
             satus: 201,
-            message: "Se Insertó la Data Exitosamente :)"
+            message: "Visitante Registrado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -37,7 +40,7 @@ appVisitantes.post("/post", async (req, res) => {
     }
 });
 
-appVisitantes.put("/update/:id", async (req, res) => {
+appVisitantes.put("/update/:id", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -45,7 +48,7 @@ appVisitantes.put("/update/:id", async (req, res) => {
         const updateData = req.body;
         let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Data Exitosamente Actualizada :)" }):
+            res.send({ message: "Data del Visitante Exitosamente Actualizada :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -57,7 +60,7 @@ appVisitantes.put("/update/:id", async (req, res) => {
     }
 });
 
-appVisitantes.delete("/delete/:id", async (req, res) => {
+appVisitantes.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -67,7 +70,7 @@ appVisitantes.delete("/delete/:id", async (req, res) => {
         });
         res.status(201).json({
             satus: 201,
-            message: "Deleted Data :)"
+            message: "Visitante ELiminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);

@@ -1,11 +1,14 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../db/atlas.js";
+import { DTOData, proxyTipoAnimal, middlewareVerify } from "../middleware/proxyTipoAnimal.js";
+import { LimitQuery } from "../helpers/config.js";
 
 const appTipoAnimales = express();
 appTipoAnimales.use(express.json());
+appTipoAnimales.use(LimitQuery());
 
-appTipoAnimales.get("/", async (req, res) => {
+appTipoAnimales.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
     let collection = db.collection("tipo_animales");
     let result = await collection.find({}).toArray();
@@ -19,14 +22,14 @@ appTipoAnimales.get("/", async (req, res) => {
     }
 });
 
-appTipoAnimales.post("/post", async (req, res) => {
+appTipoAnimales.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
     try {
         const db = await con();
         const collection = db.collection('tipo_animales');
         await collection.insertOne({...req.body});
         res.status(201).json({
             satus: 201,
-            message: "Se Insertó la Data Exitosamente :)"
+            message: "Tipo de Animal Exitosamente Insertado :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -37,7 +40,7 @@ appTipoAnimales.post("/post", async (req, res) => {
     }
 });
 
-appTipoAnimales.put("/update/:id", async (req, res) => {
+appTipoAnimales.put("/update/:id", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -45,7 +48,7 @@ appTipoAnimales.put("/update/:id", async (req, res) => {
         const updateData = req.body;
         let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Data Exitosamente Actualizada :)" }):
+            res.send({ message: "Tipo de Animal Exitosamente Actualizado :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -57,7 +60,7 @@ appTipoAnimales.put("/update/:id", async (req, res) => {
     }
 });
 
-appTipoAnimales.delete("/delete/:id", async (req, res) => {
+appTipoAnimales.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -67,7 +70,7 @@ appTipoAnimales.delete("/delete/:id", async (req, res) => {
         });
         res.status(201).json({
             satus: 201,
-            message: "Deleted Data :)"
+            message: "Tipo Animal Eliminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);

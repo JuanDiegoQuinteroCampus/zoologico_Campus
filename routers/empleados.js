@@ -1,11 +1,14 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../db/atlas.js";
+import { DTOData, proxyEmpeados, middlewareVerify } from "../middleware/proxyEmpeados.js";
+import { LimitQuery } from "../helpers/config.js";
 
 const appEmpleados = express();
 appEmpleados.use(express.json());
+appEmpleados.use(LimitQuery());
 
-appEmpleados.get("/", async (req, res) => {
+appEmpleados.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
     let collection = db.collection("empleados");
     let result = await collection.find({}).toArray();
@@ -19,7 +22,7 @@ appEmpleados.get("/", async (req, res) => {
     }
 });
 
-appEmpleados.post("/post", async (req, res) => {
+appEmpleados.post("/post", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
     try {
         const db = await con();
         const collection = db.collection('empleados');
@@ -30,7 +33,7 @@ appEmpleados.post("/post", async (req, res) => {
         await collection.insertOne(insertDocument);
         res.status(201).json({
             satus: 201,
-            message: "Se Insertó la Data Exitosamente :)"
+            message: "Empleado Insertado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -41,7 +44,7 @@ appEmpleados.post("/post", async (req, res) => {
     }
 });
 
-appEmpleados.put("/update/:id", async (req, res) => {
+appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -54,7 +57,7 @@ appEmpleados.put("/update/:id", async (req, res) => {
         }
         let result = await collection.updateOne({ _id: _id }, updateData) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Data Exitosamente Actualizada :)" }):
+            res.send({ message: "Data del Empleado Exitosamente Actualizada :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -66,7 +69,7 @@ appEmpleados.put("/update/:id", async (req, res) => {
     }
 });
 
-appEmpleados.delete("/delete/:id", async (req, res) => {
+appEmpleados.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -76,7 +79,7 @@ appEmpleados.delete("/delete/:id", async (req, res) => {
         });
         res.status(201).json({
             satus: 201,
-            message: "Deleted Data :)"
+            message: "Empleado Eliminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);
