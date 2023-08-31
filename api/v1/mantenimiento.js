@@ -1,16 +1,16 @@
 import express from "express";
 import { ObjectId} from "mongodb";
-import {con}from "../db/atlas.js";
-import { DTOData, proxyIncidentes, middlewareVerify } from "../middleware/proxyIncidentes.js";
-import { LimitQuery } from "../helpers/config.js";
+import {con}from "../../db/atlas.js";
+import { DTOData, proxyMantenimientos, middlewareVerify } from "../../middleware/proxyMantenimientos.js";
+import { LimitQuery } from "../../helpers/config.js";
 
-const appIncidentes = express();
-appIncidentes.use(express.json());
-appIncidentes.use(LimitQuery());
+const appMantenimiento = express();
+appMantenimiento.use(express.json());
+appMantenimiento.use(LimitQuery());
 
-appIncidentes.get("/", middlewareVerify, async (req, res) => {
+appMantenimiento.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
-    let collection = db.collection("incidentes");
+    let collection = db.collection("mantenimiento");
     let result = await collection.find({}).toArray();
     if (!result || result.length === 0) {
         res.status(404).json({
@@ -22,18 +22,18 @@ appIncidentes.get("/", middlewareVerify, async (req, res) => {
     }
 });
 
-appIncidentes.post("/post", middlewareVerify, proxyIncidentes, DTOData, async (req, res) => {
+appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
     try {
         const db = await con();
-        const collection = db.collection('incidentes');
+        const collection = db.collection('mantenimiento');
         const insertDocument = {
             ...req.body,
-            fecha_incidente: new Date(req.body.fecha_incidente)
+            fecha_mantenimiento: new Date(req.body.fecha_mantenimiento)
         };
         await collection.insertOne(insertDocument);
         res.status(201).json({
             satus: 201,
-            message: "Incidente Registrado Exitosamente :)"
+            message: "Mantenimiento Registrado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -44,20 +44,20 @@ appIncidentes.post("/post", middlewareVerify, proxyIncidentes, DTOData, async (r
     }
 });
 
-appIncidentes.put("/update/:id", middlewareVerify, proxyIncidentes, DTOData, async (req, res) => {
+appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('incidentes');
+        const collection = db.collection('mantenimiento');
         const updateData ={
             $set: {
                 ...req.body,
-                fecha_incidente: new Date(req.body.fecha_incidente)
+                fecha_mantenimiento: new Date(req.body.fecha_mantenimiento)
             }
         }
         let result = await collection.updateOne({ _id: _id }, updateData) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Incidente Exitosamente Actualizado :)" }):
+            res.send({ message: "Mantenimiento Exitosamente Actualizado :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -69,17 +69,17 @@ appIncidentes.put("/update/:id", middlewareVerify, proxyIncidentes, DTOData, asy
     }
 });
 
-appIncidentes.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('incidentes');
+        const collection = db.collection('mantenimiento');
         await collection.deleteOne({
             _id: id
         });
         res.status(201).json({
             satus: 201,
-            message: "Incidente ELiminado Exitosamente :)"
+            message: "Mantenimiento Eliminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);
@@ -90,4 +90,4 @@ appIncidentes.delete("/delete/:id", middlewareVerify, async (req, res) => {
         });
     }
 });
-export default appIncidentes;
+export default appMantenimiento;

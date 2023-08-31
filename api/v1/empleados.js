@@ -1,16 +1,16 @@
 import express from "express";
 import { ObjectId} from "mongodb";
-import {con}from "../db/atlas.js";
-import { DTOData, proxyMantenimientos, middlewareVerify } from "../middleware/proxyMantenimientos.js";
-import { LimitQuery } from "../helpers/config.js";
+import {con}from "../../db/atlas.js";
+import { DTOData, proxyEmpeados, middlewareVerify } from "../../middleware/proxyEmpeados.js";
+import { LimitQuery } from "../../helpers/config.js";
 
-const appMantenimiento = express();
-appMantenimiento.use(express.json());
-appMantenimiento.use(LimitQuery());
+const appEmpleados = express();
+appEmpleados.use(express.json());
+appEmpleados.use(LimitQuery());
 
-appMantenimiento.get("/", middlewareVerify, async (req, res) => {
+appEmpleados.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
-    let collection = db.collection("mantenimiento");
+    let collection = db.collection("empleados");
     let result = await collection.find({}).toArray();
     if (!result || result.length === 0) {
         res.status(404).json({
@@ -22,18 +22,18 @@ appMantenimiento.get("/", middlewareVerify, async (req, res) => {
     }
 });
 
-appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
+appEmpleados.post("/post", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
     try {
         const db = await con();
-        const collection = db.collection('mantenimiento');
+        const collection = db.collection('empleados');
         const insertDocument = {
             ...req.body,
-            fecha_mantenimiento: new Date(req.body.fecha_mantenimiento)
+            fecha_nac: new Date(req.body.fecha_nac)
         };
         await collection.insertOne(insertDocument);
         res.status(201).json({
             satus: 201,
-            message: "Mantenimiento Registrado Exitosamente :)"
+            message: "Empleado Insertado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -44,20 +44,20 @@ appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, a
     }
 });
 
-appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
+appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('mantenimiento');
+        const collection = db.collection('empleados');
         const updateData ={
             $set: {
                 ...req.body,
-                fecha_mantenimiento: new Date(req.body.fecha_mantenimiento)
+                fecha_nac: new Date(req.body.fecha_nac)
             }
         }
         let result = await collection.updateOne({ _id: _id }, updateData) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Mantenimiento Exitosamente Actualizado :)" }):
+            res.send({ message: "Data del Empleado Exitosamente Actualizada :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -69,17 +69,17 @@ appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTODa
     }
 });
 
-appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appEmpleados.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('mantenimiento');
+        const collection = db.collection('empleados');
         await collection.deleteOne({
             _id: id
         });
         res.status(201).json({
             satus: 201,
-            message: "Mantenimiento Eliminado Exitosamente :)"
+            message: "Empleado Eliminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);
@@ -90,4 +90,4 @@ appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
         });
     }
 });
-export default appMantenimiento;
+export default appEmpleados;

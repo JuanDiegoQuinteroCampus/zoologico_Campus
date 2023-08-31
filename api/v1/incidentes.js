@@ -1,16 +1,16 @@
 import express from "express";
 import { ObjectId} from "mongodb";
-import {con}from "../db/atlas.js";
-import { DTOData, proxyEmpeados, middlewareVerify } from "../middleware/proxyEmpeados.js";
-import { LimitQuery } from "../helpers/config.js";
+import {con}from "../../db/atlas.js";
+import { DTOData, proxyIncidentes, middlewareVerify } from "../../middleware/proxyIncidentes.js";
+import { LimitQuery } from "../../helpers/config.js";
 
-const appEmpleados = express();
-appEmpleados.use(express.json());
-appEmpleados.use(LimitQuery());
+const appIncidentes = express();
+appIncidentes.use(express.json());
+appIncidentes.use(LimitQuery());
 
-appEmpleados.get("/", middlewareVerify, async (req, res) => {
+appIncidentes.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
-    let collection = db.collection("empleados");
+    let collection = db.collection("incidentes");
     let result = await collection.find({}).toArray();
     if (!result || result.length === 0) {
         res.status(404).json({
@@ -22,18 +22,18 @@ appEmpleados.get("/", middlewareVerify, async (req, res) => {
     }
 });
 
-appEmpleados.post("/post", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
+appIncidentes.post("/post", middlewareVerify, proxyIncidentes, DTOData, async (req, res) => {
     try {
         const db = await con();
-        const collection = db.collection('empleados');
+        const collection = db.collection('incidentes');
         const insertDocument = {
             ...req.body,
-            fecha_nac: new Date(req.body.fecha_nac)
+            fecha_incidente: new Date(req.body.fecha_incidente)
         };
         await collection.insertOne(insertDocument);
         res.status(201).json({
             satus: 201,
-            message: "Empleado Insertado Exitosamente :)"
+            message: "Incidente Registrado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -44,20 +44,20 @@ appEmpleados.post("/post", middlewareVerify, proxyEmpeados, DTOData, async (req,
     }
 });
 
-appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
+appIncidentes.put("/update/:id", middlewareVerify, proxyIncidentes, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('empleados');
+        const collection = db.collection('incidentes');
         const updateData ={
             $set: {
                 ...req.body,
-                fecha_nac: new Date(req.body.fecha_nac)
+                fecha_incidente: new Date(req.body.fecha_incidente)
             }
         }
         let result = await collection.updateOne({ _id: _id }, updateData) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Data del Empleado Exitosamente Actualizada :)" }):
+            res.send({ message: "Incidente Exitosamente Actualizado :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -69,17 +69,17 @@ appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, DTOData, async 
     }
 });
 
-appEmpleados.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appIncidentes.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('empleados');
+        const collection = db.collection('incidentes');
         await collection.deleteOne({
             _id: id
         });
         res.status(201).json({
             satus: 201,
-            message: "Empleado Eliminado Exitosamente :)"
+            message: "Incidente ELiminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);
@@ -90,4 +90,4 @@ appEmpleados.delete("/delete/:id", middlewareVerify, async (req, res) => {
         });
     }
 });
-export default appEmpleados;
+export default appIncidentes;
