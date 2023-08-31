@@ -1,11 +1,14 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../db/atlas.js";
+import { DTOData, proxyAreas, middlewareVerify } from "../middleware/proxyAreas.js";
+import { LimitQuery } from "../helpers/config.js";
 
 const appAreas = express();
 appAreas.use(express.json());
+appAreas.use(LimitQuery());
 
-appAreas.get("/", async (req, res) => {
+appAreas.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
     let collection = db.collection("areas");
     let result = await collection.find({}).toArray();
@@ -19,14 +22,14 @@ appAreas.get("/", async (req, res) => {
     }
 });
 
-appAreas.post("/post", async (req, res) => {
+appAreas.post("/post", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
     try {
         const db = await con();
         const collection = db.collection('areas');
         await collection.insertOne({...req.body});
         res.status(201).json({
             satus: 201,
-            message: "Se Insertó la Data Exitosamente :)"
+            message: "Area Insertada Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -37,7 +40,7 @@ appAreas.post("/post", async (req, res) => {
     }
 });
 
-appAreas.put("/update/:id", async (req, res) => {
+appAreas.put("/update/:id", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -45,7 +48,7 @@ appAreas.put("/update/:id", async (req, res) => {
         const updateData = req.body;
         let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Data Exitosamente Actualizada :)" }):
+            res.send({ message: "Area Exitosamente Actualizada :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -57,7 +60,7 @@ appAreas.put("/update/:id", async (req, res) => {
     }
 });
 
-appAreas.delete("/delete/:id", async (req, res) => {
+appAreas.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -67,7 +70,7 @@ appAreas.delete("/delete/:id", async (req, res) => {
         });
         res.status(201).json({
             satus: 201,
-            message: "Deleted Data :)"
+            message: "Area Eliminada Exitosamente :)"
         });
     } catch (error) {
         console.error(error);

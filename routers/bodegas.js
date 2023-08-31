@@ -1,16 +1,16 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../db/atlas.js";
-import { DTOData, proxyMantenimientos, middlewareVerify } from "../middleware/proxyMantenimientos.js";
+import { DTOData, proxyBodegas, middlewareVerify } from "../middleware/proxyBodegas.js";
 import { LimitQuery } from "../helpers/config.js";
 
-const appMantenimiento = express();
-appMantenimiento.use(express.json());
-appMantenimiento.use(LimitQuery());
+const appBodegas = express();
+appBodegas.use(express.json());
+appBodegas.use(LimitQuery());
 
-appMantenimiento.get("/", middlewareVerify, async (req, res) => {
+appBodegas.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
-    let collection = db.collection("mantenimiento");
+    let collection = db.collection("bodegas");
     let result = await collection.find({}).toArray();
     if (!result || result.length === 0) {
         res.status(404).json({
@@ -22,18 +22,14 @@ appMantenimiento.get("/", middlewareVerify, async (req, res) => {
     }
 });
 
-appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
+appBodegas.post("/post", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
     try {
         const db = await con();
-        const collection = db.collection('mantenimiento');
-        const insertDocument = {
-            ...req.body,
-            fecha_mantenimiento: new Date(req.body.fecha_mantenimiento)
-        };
-        await collection.insertOne(insertDocument);
+        const collection = db.collection('bodegas');
+        await collection.insertOne({...req.body});
         res.status(201).json({
             satus: 201,
-            message: "Mantenimiento Registrado Exitosamente :)"
+            message: "Bodega Insertada Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -44,20 +40,15 @@ appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, a
     }
 });
 
-appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
+appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('mantenimiento');
-        const updateData ={
-            $set: {
-                ...req.body,
-                fecha_mantenimiento: new Date(req.body.fecha_mantenimiento)
-            }
-        }
-        let result = await collection.updateOne({ _id: _id }, updateData) 
+        const collection = db.collection('bodegas');
+        const updateData = req.body;
+        let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Mantenimiento Exitosamente Actualizado :)" }):
+            res.send({ message: "Bodega Exitosamente Actualizada :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -69,17 +60,17 @@ appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTODa
     }
 });
 
-appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appBodegas.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('mantenimiento');
+        const collection = db.collection('bodegas');
         await collection.deleteOne({
             _id: id
         });
         res.status(201).json({
             satus: 201,
-            message: "Mantenimiento Eliminado Exitosamente :)"
+            message: "Bodega Eliminada Exitosamente :)"
         });
     } catch (error) {
         console.error(error);
@@ -90,4 +81,4 @@ appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
         });
     }
 });
-export default appMantenimiento;
+export default appBodegas;
