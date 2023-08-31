@@ -1,16 +1,16 @@
 import express from "express";
 import { ObjectId} from "mongodb";
-import {con}from "../db/atlas.js";
-import { DTOData, proxyTipoAnimal, middlewareVerify } from "../middleware/proxyTipoAnimal.js";
-import { LimitQuery } from "../helpers/config.js";
+import {con}from "../../db/atlas.js";
+import { DTOData, proxyHabitats, middlewareVerify } from "../../middleware/proxyHabitats.js";
+import { LimitQuery } from "../../helpers/config.js";
 
-const appTipoAnimales = express();
-appTipoAnimales.use(express.json());
-appTipoAnimales.use(LimitQuery());
+const appHabitats = express();
+appHabitats.use(express.json());
+appHabitats.use(LimitQuery());
 
-appTipoAnimales.get("/", middlewareVerify, async (req, res) => {
+appHabitats.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
-    let collection = db.collection("tipo_animales");
+    let collection = db.collection("habitats");
     let result = await collection.find({}).toArray();
     if (!result || result.length === 0) {
         res.status(404).json({
@@ -22,14 +22,14 @@ appTipoAnimales.get("/", middlewareVerify, async (req, res) => {
     }
 });
 
-appTipoAnimales.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
+appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
     try {
         const db = await con();
-        const collection = db.collection('tipo_animales');
+        const collection = db.collection('habitats');
         await collection.insertOne({...req.body});
         res.status(201).json({
             satus: 201,
-            message: "Tipo de Animal Exitosamente Insertado :)"
+            message: "Habitat Insertado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -40,15 +40,15 @@ appTipoAnimales.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, async 
     }
 });
 
-appTipoAnimales.put("/update/:id", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
+appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('tipo_animales');
+        const collection = db.collection('habitats');
         const updateData = req.body;
         let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Tipo de Animal Exitosamente Actualizado :)" }):
+            res.send({ message: "Habitat Exitosamente Actualizado :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -60,17 +60,17 @@ appTipoAnimales.put("/update/:id", middlewareVerify, proxyTipoAnimal, DTOData, a
     }
 });
 
-appTipoAnimales.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appHabitats.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('tipo_animales');
+        const collection = db.collection('habitats');
         await collection.deleteOne({
             _id: id
         });
         res.status(201).json({
             satus: 201,
-            message: "Tipo Animal Eliminado Exitosamente :)"
+            message: "Habitat Eliminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);
@@ -81,4 +81,4 @@ appTipoAnimales.delete("/delete/:id", middlewareVerify, async (req, res) => {
         });
     }
 });
-export default appTipoAnimales;
+export default appHabitats;

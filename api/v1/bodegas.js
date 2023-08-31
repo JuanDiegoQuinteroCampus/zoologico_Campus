@@ -1,8 +1,8 @@
 import express from "express";
 import { ObjectId} from "mongodb";
-import {con}from "../db/atlas.js";
-import { DTOData, proxyBodegas, middlewareVerify } from "../middleware/proxyBodegas.js";
-import { LimitQuery } from "../helpers/config.js";
+import {con}from "../../db/atlas.js";
+import { DTOData, proxyBodegas, middlewareVerify } from "../../middleware/proxyBodegas.js";
+import { LimitQuery } from "../../helpers/config.js";
 
 const appBodegas = express();
 appBodegas.use(express.json());

@@ -1,16 +1,16 @@
 import express from "express";
 import { ObjectId} from "mongodb";
-import {con}from "../db/atlas.js";
-import { DTOData, proxyHabitats, middlewareVerify } from "../middleware/proxyHabitats.js";
-import { LimitQuery } from "../helpers/config.js";
+import {con}from "../../db/atlas.js";
+import { DTOData, proxyVisitantes, middlewareVerify } from "../../middleware/proxyVisitantes.js";
+import { LimitQuery } from "../../helpers/config.js";
 
-const appHabitats = express();
-appHabitats.use(express.json());
-appHabitats.use(LimitQuery());
+const appVisitantes = express();
+appVisitantes.use(express.json());
+appVisitantes.use(LimitQuery());
 
-appHabitats.get("/", middlewareVerify, async (req, res) => {
+appVisitantes.get("/", middlewareVerify, async (req, res) => {
     let db = await con();
-    let collection = db.collection("habitats");
+    let collection = db.collection('visitantes');
     let result = await collection.find({}).toArray();
     if (!result || result.length === 0) {
         res.status(404).json({
@@ -22,14 +22,14 @@ appHabitats.get("/", middlewareVerify, async (req, res) => {
     }
 });
 
-appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
+appVisitantes.post("/post", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
     try {
         const db = await con();
-        const collection = db.collection('habitats');
+        const collection = db.collection('visitantes');
         await collection.insertOne({...req.body});
         res.status(201).json({
             satus: 201,
-            message: "Habitat Insertado Exitosamente :)"
+            message: "Visitante Registrado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -40,15 +40,15 @@ appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, async (req, 
     }
 });
 
-appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
+appVisitantes.put("/update/:id", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('habitats');
+        const collection = db.collection('visitantes');
         const updateData = req.body;
         let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Habitat Exitosamente Actualizado :)" }):
+            res.send({ message: "Data del Visitante Exitosamente Actualizada :)" }):
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -60,17 +60,17 @@ appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (
     }
 });
 
-appHabitats.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appVisitantes.delete("/delete/:id", middlewareVerify, async (req, res) => {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
-        const collection = db.collection('habitats');
+        const collection = db.collection('visitantes');
         await collection.deleteOne({
             _id: id
         });
         res.status(201).json({
             satus: 201,
-            message: "Habitat Eliminado Exitosamente :)"
+            message: "Visitante ELiminado Exitosamente :)"
         });
     } catch (error) {
         console.error(error);
@@ -81,4 +81,4 @@ appHabitats.delete("/delete/:id", middlewareVerify, async (req, res) => {
         });
     }
 });
-export default appHabitats;
+export default appVisitantes;
