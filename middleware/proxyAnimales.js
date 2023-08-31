@@ -1,13 +1,17 @@
 import 'reflect-metadata';
+import express from "express";
 import { plainToClass, classToPlain } from 'class-transformer';
 import { validate } from 'class-validator';
+import { validationResult } from 'express-validator';
 import { DTO } from "../helpers/token.js";
 import { Router } from "express";
-import express from "express";
 import { Animales } from '../dtocontroller/animales.js';
+import { parametro } from '../validator/params.js';
+
 const middlewareVerify = Router();
 const DTOData = Router();
 const proxyAnimales = express();
+const middlewareParamAnimales = Router();
 
 proxyAnimales.use(async (req, res, next) => {
   try {
@@ -53,8 +57,15 @@ DTOData.use(async (req, res, next) => {
   }
 });
 
+middlewareParamAnimales.use(parametro, (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+  next();
+});
+
 export {
   middlewareVerify,
   DTOData,
-  proxyAnimales
+  proxyAnimales,
+  middlewareParamAnimales
 };
