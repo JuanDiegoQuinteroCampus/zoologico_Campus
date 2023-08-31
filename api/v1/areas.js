@@ -1,5 +1,4 @@
 import express from "express";
-import { ObjectId} from "mongodb";
 import {con}from "../../db/atlas.js";
 import { DTOData, proxyAreas, middlewareVerify } from "../../middleware/proxyAreas.js";
 import { LimitQuery } from "../../helpers/config.js";
