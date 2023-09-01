@@ -33,17 +33,31 @@ proxyEmpeados.use(async (req, res, next) => {
 
 
 middlewareVerify.use((req, res, next) => {
-  if (!req.rateLimit) return;
+  if (!req.rateLimit) return; 
+
   if (req.data && req.data.payload) {
-    let { payload } = req.data;
-    const { iat, exp, ...newPayload } = payload;
-    payload = newPayload;
-    let Clone = JSON.stringify(classToPlain(plainToClass(DTO("empleados").class, {}, { ignoreDecorators: true })));
-    let Verify = Clone === JSON.stringify(payload);
-    if (!Verify) {
-      return res.status(406).send({ status: 406, message: "No Autorizado" });
-    }
+      let { payload } = req.data;
+      const { iat, exp, ...newPayload } = payload;
+      payload = newPayload;
+
+      const payloadDateObjects = {
+          ...payload,
+          fecha_nac: new Date(payload.fecha_nac)
+      };
+
+      const Clone = {
+          ...payload,
+          fecha_nac: new Date(payload.fecha_nac)
+      };
+
+      const VerifyDate = JSON.stringify(Clone).replace(/\s+/g, '') === JSON.stringify(payloadDateObjects).replace(/\s+/g, '');
+
+      if (!VerifyDate) {
+         
+          return res.status(406).send({ status: 406, message: "No Autorizado" });
+      }
   }
+
   next();
 });
 
