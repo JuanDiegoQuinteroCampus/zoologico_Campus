@@ -3,25 +3,37 @@ import {con}from "../../db/atlas.js";
 import { DTOData, proxyAreas, middlewareVerify } from "../../middleware/proxyAreas.js";
 import { LimitQuery } from "../../helpers/config.js";
 
-const appAreas = express();
+/* const appAreas = express();
 appAreas.use(express.json());
 appAreas.use(LimitQuery());
 
 appAreas.get("/", middlewareVerify, async (req, res) => {
-    let db = await con();
-    let collection = db.collection("areas");
-    let result = await collection.find({}).toArray();
-    if (!result || result.length === 0) {
-        res.status(404).json({
-            status: 404,
-            message: "Not Found"
-        });
+    
+}); */
+
+export async function getAllAreas(req, res){
+    try {
+        let db = await con();
+        let collection = db.collection("areas");
+        let result = await collection.find({}).toArray();
+        if (!result || result.length === 0) {
+            res.status(404).json({
+                status: 404,
+                message: "Not Found"
+            });
     } else {
         res.send(result);
     }
-});
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
 
-appAreas.post("/post", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
+// appAreas.post("/post", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
+    
+// });
+export async function postAreas(req, res) {
     try {
         const db = await con();
         const collection = db.collection('areas');
@@ -37,9 +49,13 @@ appAreas.post("/post", middlewareVerify, proxyAreas, DTOData, async (req, res) =
             error: e.message
         });
     }
-});
+}
 
-appAreas.put("/update/:id", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
+
+// appAreas.put("/update/:id", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
+    
+// });
+export async function putAreas(req,res) {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -57,9 +73,13 @@ appAreas.put("/update/:id", middlewareVerify, proxyAreas, DTOData, async (req, r
             error: e.message
         });
     }
-});
+}
 
-appAreas.delete("/delete/:id", middlewareVerify, async (req, res) => {
+
+// appAreas.delete("/delete/:id", middlewareVerify, async (req, res) => {
+    
+// });
+export async function deleteAreas(req, res) {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -79,5 +99,5 @@ appAreas.delete("/delete/:id", middlewareVerify, async (req, res) => {
             error: error.message
         });
     }
-});
+}
 export default appAreas;
