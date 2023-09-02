@@ -4,11 +4,14 @@ import {con}from "../../db/atlas.js";
 import { DTOData, proxyTipoAnimal, middlewareVerify } from "../../middleware/proxyTipoAnimal.js";
 import { LimitQuery } from "../../helpers/config.js";
 
-const appTipoAnimales = express();
+/* const appTipoAnimales = express();
 appTipoAnimales.use(express.json());
-appTipoAnimales.use(LimitQuery());
+appTipoAnimales.use(LimitQuery()); */
 
-appTipoAnimales.get("/", middlewareVerify, async (req, res) => {
+/* appTipoAnimales.get("/", middlewareVerify, async (req, res) => {
+    
+}); */
+export async function getAllTipoAnimal(req, res) {
     let db = await con();
     let collection = db.collection("tipo_animales");
     let result = await collection.find({}).toArray();
@@ -20,9 +23,12 @@ appTipoAnimales.get("/", middlewareVerify, async (req, res) => {
     } else {
         res.send(result);
     }
-});
+}
 
-appTipoAnimales.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
+/* appTipoAnimales.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
+    
+}); */
+export async function postTipoAnimal(req, res) {
     try {
         const db = await con();
         const collection = db.collection('tipo_animales');
@@ -38,9 +44,12 @@ appTipoAnimales.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, async 
             error: e.message
         });
     }
-});
+}
 
-appTipoAnimales.put("/update/:id", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
+/* appTipoAnimales.put("/update/:id", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
+    
+}); */
+export async function putTipoAnimal(req, res) {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -58,9 +67,12 @@ appTipoAnimales.put("/update/:id", middlewareVerify, proxyTipoAnimal, DTOData, a
             error: e.message
         });
     }
-});
+}
 
-appTipoAnimales.delete("/delete/:id", middlewareVerify, async (req, res) => {
+/* appTipoAnimales.delete("/delete/:id", middlewareVerify, async (req, res) => {
+    
+}); */
+export async function deleteTipoAnimal(req, res) {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -80,5 +92,5 @@ appTipoAnimales.delete("/delete/:id", middlewareVerify, async (req, res) => {
             error: error.message
         });
     }
-});
+}
 export default appTipoAnimales;
