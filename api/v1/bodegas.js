@@ -1,42 +1,49 @@
 import express from "express";
-import { ObjectId} from "mongodb";
-import {con}from "../../db/atlas.js";
-import { DTOData, proxyBodegas, middlewareVerify } from "../../middleware/proxyBodegas.js";
-import { LimitQuery } from "../../helpers/config.js";
+import { ObjectId } from "mongodb";
+import { con } from "../../db/atlas.js";
 
-// const appBodegas = express();
-// appBodegas.use(express.json());
-// appBodegas.use(LimitQuery());
-
-// appBodegas.get("/", middlewareVerify, async (req, res) => {
-    
-// });
 export async function getAllBodegas(req, res) {
     try {
         let db = await con();
-    let collection = db.collection("bodegas");
-    let result = await collection.find({}).toArray();
-    if (!result || result.length === 0) {
-        res.status(404).json({
-            status: 404,
-            message: "Not Found"
-        });
-    } else {
-        res.send(result);
-    }
+        let collection = db.collection("bodegas");
+        let result = await collection.find({}).sort({ _id: 1 }).toArray();
+        if (!result || result.length === 0) {
+            res.status(404).json({
+                status: 404,
+                message: "Not Found"
+            });
+        } else {
+            res.send(result);
+        }
     } catch (error) {
         console.log(error.errInfo);
     }
-}
+};
 
-// appBodegas.post("/post", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
-    
-// });
-export async function PostBodegas(req, res) {
+export async function getBodegaById(req, res, bodegaId) {
+    let id = parseInt(bodegaId);
+    let db = await con();
+    let collection = db.collection("bodegas");
+    let result = await collection.find({ _id: id }).toArray();
+    try {
+        if (!result || result.length === 0) {
+            res.status(404).json({
+                status: 404,
+                message: "Not Found"
+            });
+        } else {
+            res.send(result);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export async function postBodegas(req, res) {
     try {
         const db = await con();
         const collection = db.collection('bodegas');
-        await collection.insertOne({...req.body});
+        await collection.insertOne({ ...req.body });
         res.status(201).json({
             satus: 201,
             message: "Bodega Insertada Exitosamente :)"
@@ -47,22 +54,18 @@ export async function PostBodegas(req, res) {
             message: "Internal Server Error :(",
             error: e.message
         });
-        console.log(error.errInfo);
     }
-}
+};
 
-// appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
-    
-// });
-export async function putBodegas(req, res) {
+export async function putBodegas(req, res, bodegaId) {
     try {
-        let _id = parseInt(req.params.id);
+        let _id = parseInt(bodegaId);
         const db = await con();
         const collection = db.collection('bodegas');
         const updateData = req.body;
-        let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
-        result.matchedCount === 1 ? 
-            res.send({ message: "Bodega Exitosamente Actualizada :)" }):
+        let result = await collection.updateOne({ _id: _id }, { $set: updateData })
+        result.matchedCount === 1 ?
+            res.send({ message: "Bodega Exitosamente Actualizada :)" }) :
             res.send({ message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
@@ -71,16 +74,12 @@ export async function putBodegas(req, res) {
             message: `Internal Server Error :(`,
             error: e.message
         });
-        console.log(error);
     }
-}
+};
 
-// appBodegas.delete("/delete/:id", middlewareVerify, async (req, res) => {
-    
-// });
-export async function deleteBodegas(req, res) {
+export async function deleteBodegas(req, res, bodegaId) {
     try {
-        let id = parseInt(req.params.id);
+        let id = parseInt(bodegaId);
         const db = await con();
         const collection = db.collection('bodegas');
         await collection.deleteOne({
@@ -98,5 +97,4 @@ export async function deleteBodegas(req, res) {
             error: error.message
         });
     }
-}
-export default appBodegas;
+};
