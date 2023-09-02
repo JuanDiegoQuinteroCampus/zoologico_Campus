@@ -1,8 +1,8 @@
 import express from "express";
 import { ObjectId } from "mongodb";
 import { con } from "../../db/atlas.js";
-import { proxyAnimales, middlewareVerify, DTOData } from "../../middleware/proxyAnimales.js";
-import { LimitQuery } from "../../helpers/config.js";
+// import { proxyAnimales, middlewareVerify, DTOData } from "../../middleware/proxyAnimales.js";
+// import { LimitQuery } from "../../helpers/config.js";
 
 /* const appAnimales = express();
 appAnimales.use(express.json());
@@ -119,4 +119,3 @@ export async function deleteAnimal(req, res) {
     }
 }
 
-export default appAnimales;
