@@ -24,7 +24,50 @@ export async function getAllTipoAnimal(req, res) {
         res.send(result);
     }
 }
+export async function getIdTipoAni(req, res) {
+    try {
+        let db = await con();
+    
 
+    let collection = db.collection("tipo_animales");
+    const id = Math.floor(req.params._id)
+    let result = await collection.find({_id: id},{projection: { nombre: 1, especie: 1, comportamiento: 1 }}).toArray();
+    if (!result || result.length === 0) {
+        res.status(404).json({
+            status: 404,
+            message: "Not Found"
+        });
+    } else {
+        res.send(result);
+    }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function getPeligroAnimal(req, res) {
+    try {
+        let db = await con();
+    
+
+    let collection = db.collection("tipo_animales");
+   
+    let result = await collection.find({ conservacion: /.*peligro.*/i },{projection: { nombre: 1, especie: 1, conservacion: 1 }}).toArray();
+    if (!result || result.length === 0) {
+        res.status(404).json({
+            status: 404,
+            message: "Not Found"
+        });
+    } else {
+        res.send(result);
+    }
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({
+            status: 500,
+            message: "Internal Server Error"
+        });
+    }
+}
 /* appTipoAnimales.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
     
 }); */
