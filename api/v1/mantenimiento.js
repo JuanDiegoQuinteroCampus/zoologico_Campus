@@ -1,20 +1,12 @@
 import express from "express";
-import { ObjectId} from "mongodb";
-import {con}from "../../db/atlas.js";
-import { DTOData, proxyMantenimientos, middlewareVerify } from "../../middleware/proxyMantenimientos.js";
-import { LimitQuery } from "../../helpers/config.js";
+import { ObjectId } from "mongodb";
+import { con } from "../../db/atlas.js";
 
-// const appMantenimiento = express();
-// appMantenimiento.use(express.json());
-// appMantenimiento.use(LimitQuery());
-
-/* appMantenimiento.get("/", middlewareVerify, async (req, res) => {
-    
-}); */
 export async function getAllMantenimientos(req, res) {
+
     let db = await con();
     let collection = db.collection("mantenimiento");
-    let result = await collection.find({}).toArray();
+    let result = await collection.find({}).sort({ _id: 1 }).toArray();
     if (!result || result.length === 0) {
         res.status(404).json({
             status: 404,
@@ -23,11 +15,27 @@ export async function getAllMantenimientos(req, res) {
     } else {
         res.send(result);
     }
-}
+};
 
-/* appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
-    
-}); */
+export async function getHabitatById(req, res, mantenimientoId) {
+    let id = parseInt(mantenimientoId);
+    let db = await con();
+    let collection = db.collection("mantenimiento");
+    let result = await collection.find({ _id: id }).toArray();
+    try {
+        if (!result || result.length === 0) {
+            res.status(404).json({
+                status: 404,
+                message: "Not Found"
+            });
+        } else {
+            res.send(result);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export async function postMantenimiento(req, res) {
     try {
         const db = await con();
@@ -48,26 +56,23 @@ export async function postMantenimiento(req, res) {
             error: e.message
         });
     }
-}
+};
 
-/* appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
-    
-}); */
-export async function putMantenimiento(req, res) {
+export async function putMantenimiento(req, res, mantenimientoId) {
     try {
-        let _id = parseInt(req.params.id);
+        let _id = parseInt(mantenimientoId);
         const db = await con();
         const collection = db.collection('mantenimiento');
-        const updateData ={
+        const updateData = {
             $set: {
                 ...req.body,
                 fecha_mantenimiento: new Date(req.body.fecha_mantenimiento)
             }
         }
-        let result = await collection.updateOne({ _id: _id }, updateData) 
-        result.matchedCount === 1 ? 
-            res.send({ message: "Mantenimiento Exitosamente Actualizado :)" }):
-            res.send({ message: "No se encontró Data" });
+        let result = await collection.updateOne({ _id: _id }, updateData)
+        result.matchedCount === 1 ?
+            res.status(201).json({ status: 201, message: "Mantenimiento Exitosamente Actualizado :)" }) :
+            res.status(404).json({ status: 404, message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
         res.status(500).json({
@@ -76,14 +81,11 @@ export async function putMantenimiento(req, res) {
             error: e.message
         });
     }
-}
+};
 
-/* appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
-    
-}); */
-export async function deleteManteniemiento(req, res) {
+export async function deleteManteniemiento(req, res, mantenimientoId) {
     try {
-        let id = parseInt(req.params.id);
+        let id = parseInt(mantenimientoId);
         const db = await con();
         const collection = db.collection('mantenimiento');
         await collection.deleteOne({
@@ -101,5 +103,4 @@ export async function deleteManteniemiento(req, res) {
             error: error.message
         });
     }
-}
-export default appMantenimiento;
+};
