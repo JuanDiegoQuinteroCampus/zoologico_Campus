@@ -1,20 +1,11 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../../db/atlas.js";
-import { DTOData, proxyTipoAnimal, middlewareVerify } from "../../middleware/proxyTipoAnimal.js";
-import { LimitQuery } from "../../helpers/config.js";
 
-/* const appTipoAnimales = express();
-appTipoAnimales.use(express.json());
-appTipoAnimales.use(LimitQuery()); */
-
-/* appTipoAnimales.get("/", middlewareVerify, async (req, res) => {
-    
-}); */
 export async function getAllTipoAnimal(req, res) {
     let db = await con();
     let collection = db.collection("tipo_animales");
-    let result = await collection.find({}).toArray();
+    let result = await collection.find({}).sort({_id: 1}).toArray();
     if (!result || result.length === 0) {
         res.status(404).json({
             status: 404,
@@ -23,11 +14,27 @@ export async function getAllTipoAnimal(req, res) {
     } else {
         res.send(result);
     }
-}
+};
 
-/* appTipoAnimales.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
-    
-}); */
+export async function getTipoAnimalById( req, res, tipoAnimalId) {
+    let id = parseInt(tipoAnimalId);
+    let db = await con();
+    let collection = db.collection("tipo_animales");
+    let result = await collection.find({ _id: id }).toArray();
+    try {
+        if (!result || result.length === 0) {
+            res.status(404).json({
+                status: 404,
+                message: "Not Found"
+            });
+        } else {
+            res.send(result);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export async function postTipoAnimal(req, res) {
     try {
         const db = await con();
@@ -44,21 +51,18 @@ export async function postTipoAnimal(req, res) {
             error: e.message
         });
     }
-}
+};
 
-/* appTipoAnimales.put("/update/:id", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
-    
-}); */
-export async function putTipoAnimal(req, res) {
+export async function putTipoAnimal(req, res, tipoAnimalId) {
     try {
-        let _id = parseInt(req.params.id);
+        let _id = parseInt(tipoAnimalId);
         const db = await con();
         const collection = db.collection('tipo_animales');
         const updateData = req.body;
         let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Tipo de Animal Exitosamente Actualizado :)" }):
-            res.send({ message: "No se encontró Data" });
+            res.status(201).json({ status: 201, message: "Tipo de Animal Exitosamente Actualizado :)" }):
+            res.status(404).json({ status: 404, message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
         res.status(500).json({
@@ -67,14 +71,11 @@ export async function putTipoAnimal(req, res) {
             error: e.message
         });
     }
-}
+};
 
-/* appTipoAnimales.delete("/delete/:id", middlewareVerify, async (req, res) => {
-    
-}); */
-export async function deleteTipoAnimal(req, res) {
+export async function deleteTipoAnimal(req, res, tipoAnimalId) {
     try {
-        let id = parseInt(req.params.id);
+        let id = parseInt(tipoAnimalId);
         const db = await con();
         const collection = db.collection('tipo_animales');
         await collection.deleteOne({
@@ -92,5 +93,4 @@ export async function deleteTipoAnimal(req, res) {
             error: error.message
         });
     }
-}
-export default appTipoAnimales;
+};
