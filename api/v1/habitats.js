@@ -1,8 +1,7 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../../db/atlas.js";
-import { DTOData, proxyHabitats, middlewareVerify } from "../../middleware/proxyHabitats.js";
-import { LimitQuery } from "../../helpers/config.js";
+
 
 // const appHabitats = express();
 // appHabitats.use(express.json());

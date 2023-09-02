@@ -1,8 +1,7 @@
 import express from "express";
 import { ObjectId} from "mongodb";
 import {con}from "../../db/atlas.js";
-import { DTOData, proxyTipoAnimal, middlewareVerify } from "../../middleware/proxyTipoAnimal.js";
-import { LimitQuery } from "../../helpers/config.js";
+
 
 /* const appTipoAnimales = express();
 appTipoAnimales.use(express.json());
