@@ -4,12 +4,17 @@ import {con}from "../../db/atlas.js";
 import { DTOData, proxyEmpeados, middlewareVerify } from "../../middleware/proxyEmpeados.js";
 import { LimitQuery } from "../../helpers/config.js";
 
-const appEmpleados = express();
-appEmpleados.use(express.json());
-appEmpleados.use(LimitQuery());
+// const appEmpleados = express();
+// appEmpleados.use(express.json());
+// appEmpleados.use(LimitQuery());
 
-appEmpleados.get("/", middlewareVerify, async (req, res) => {
-    let db = await con();
+// appEmpleados.get("/", middlewareVerify, async (req, res) => {
+    
+// });
+export async function getAllEmpleado(req, res) {
+    
+    try {
+        let db = await con();
     let collection = db.collection("empleados");
     let result = await collection.find({}).toArray();
     if (!result || result.length === 0) {
@@ -20,9 +25,15 @@ appEmpleados.get("/", middlewareVerify, async (req, res) => {
     } else {
         res.send(result);
     }
-});
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-appEmpleados.post("/post", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
+// appEmpleados.post("/post", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
+    
+// });
+export async function postEmpleados(req, res) {
     try {
         const db = await con();
         const collection = db.collection('empleados');
@@ -42,9 +53,12 @@ appEmpleados.post("/post", middlewareVerify, proxyEmpeados, DTOData, async (req,
             error: e.message
         });
     }
-});
+}
 
-appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
+// appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
+   
+// });
+export async function putEmpleados(req, res) {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -67,9 +81,12 @@ appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, DTOData, async 
             error: e.message
         });
     }
-});
+}
 
-appEmpleados.delete("/delete/:id", middlewareVerify, async (req, res) => {
+// appEmpleados.delete("/delete/:id", middlewareVerify, async (req, res) => {
+   
+// });
+export async function deleteEmpleados(req, res) {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -89,5 +106,5 @@ appEmpleados.delete("/delete/:id", middlewareVerify, async (req, res) => {
             error: error.message
         });
     }
-});
+}
 export default appEmpleados;

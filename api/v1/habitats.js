@@ -4,11 +4,14 @@ import {con}from "../../db/atlas.js";
 import { DTOData, proxyHabitats, middlewareVerify } from "../../middleware/proxyHabitats.js";
 import { LimitQuery } from "../../helpers/config.js";
 
-const appHabitats = express();
-appHabitats.use(express.json());
-appHabitats.use(LimitQuery());
+// const appHabitats = express();
+// appHabitats.use(express.json());
+// appHabitats.use(LimitQuery());
 
-appHabitats.get("/", middlewareVerify, async (req, res) => {
+// appHabitats.get("/", middlewareVerify, async (req, res) => {
+    
+// });
+export async function getAllHabitats(req, res) {
     let db = await con();
     let collection = db.collection("habitats");
     let result = await collection.find({}).toArray();
@@ -20,9 +23,12 @@ appHabitats.get("/", middlewareVerify, async (req, res) => {
     } else {
         res.send(result);
     }
-});
+}
 
-appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
+// appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
+    
+// });
+export async function postHabitats(req, res) {
     try {
         const db = await con();
         const collection = db.collection('habitats');
@@ -38,9 +44,12 @@ appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, async (req, 
             error: e.message
         });
     }
-});
+}
 
-appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
+// appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
+    
+// });
+export async function putHabitats(req, res) {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -58,9 +67,12 @@ appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (
             error: e.message
         });
     }
-});
+}
 
-appHabitats.delete("/delete/:id", middlewareVerify, async (req, res) => {
+// appHabitats.delete("/delete/:id", middlewareVerify, async (req, res) => {
+    
+// });
+export async function deleteHabitats(req, res) {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -80,5 +92,5 @@ appHabitats.delete("/delete/:id", middlewareVerify, async (req, res) => {
             error: error.message
         });
     }
-});
+}
 export default appHabitats;

@@ -4,12 +4,16 @@ import {con}from "../../db/atlas.js";
 import { DTOData, proxyBodegas, middlewareVerify } from "../../middleware/proxyBodegas.js";
 import { LimitQuery } from "../../helpers/config.js";
 
-const appBodegas = express();
-appBodegas.use(express.json());
-appBodegas.use(LimitQuery());
+// const appBodegas = express();
+// appBodegas.use(express.json());
+// appBodegas.use(LimitQuery());
 
-appBodegas.get("/", middlewareVerify, async (req, res) => {
-    let db = await con();
+// appBodegas.get("/", middlewareVerify, async (req, res) => {
+    
+// });
+export async function getAllBodegas(req, res) {
+    try {
+        let db = await con();
     let collection = db.collection("bodegas");
     let result = await collection.find({}).toArray();
     if (!result || result.length === 0) {
@@ -20,9 +24,15 @@ appBodegas.get("/", middlewareVerify, async (req, res) => {
     } else {
         res.send(result);
     }
-});
+    } catch (error) {
+        console.log(error.errInfo);
+    }
+}
 
-appBodegas.post("/post", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
+// appBodegas.post("/post", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
+    
+// });
+export async function PostBodegas(req, res) {
     try {
         const db = await con();
         const collection = db.collection('bodegas');
@@ -37,10 +47,14 @@ appBodegas.post("/post", middlewareVerify, proxyBodegas, DTOData, async (req, re
             message: "Internal Server Error :(",
             error: e.message
         });
+        console.log(error.errInfo);
     }
-});
+}
 
-appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
+// appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
+    
+// });
+export async function putBodegas(req, res) {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -57,10 +71,14 @@ appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, DTOData, async (re
             message: `Internal Server Error :(`,
             error: e.message
         });
+        console.log(error);
     }
-});
+}
 
-appBodegas.delete("/delete/:id", middlewareVerify, async (req, res) => {
+// appBodegas.delete("/delete/:id", middlewareVerify, async (req, res) => {
+    
+// });
+export async function deleteBodegas(req, res) {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -80,5 +98,5 @@ appBodegas.delete("/delete/:id", middlewareVerify, async (req, res) => {
             error: error.message
         });
     }
-});
+}
 export default appBodegas;

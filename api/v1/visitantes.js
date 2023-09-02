@@ -4,11 +4,14 @@ import {con}from "../../db/atlas.js";
 import { DTOData, proxyVisitantes, middlewareVerify } from "../../middleware/proxyVisitantes.js";
 import { LimitQuery } from "../../helpers/config.js";
 
-const appVisitantes = express();
-appVisitantes.use(express.json());
-appVisitantes.use(LimitQuery());
+// const appVisitantes = express();
+// appVisitantes.use(express.json());
+// appVisitantes.use(LimitQuery());
 
-appVisitantes.get("/", middlewareVerify, async (req, res) => {
+/* appVisitantes.get("/", middlewareVerify, async (req, res) => {
+    
+}); */
+export async function getAllVisitantes(req, res) {
     let db = await con();
     let collection = db.collection('visitantes');
     let result = await collection.find({}).toArray();
@@ -20,9 +23,12 @@ appVisitantes.get("/", middlewareVerify, async (req, res) => {
     } else {
         res.send(result);
     }
-});
+}
 
-appVisitantes.post("/post", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
+/* appVisitantes.post("/post", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
+    
+}); */
+export async function postVisitantes(req, res) {
     try {
         const db = await con();
         const collection = db.collection('visitantes');
@@ -38,9 +44,12 @@ appVisitantes.post("/post", middlewareVerify, proxyVisitantes, DTOData, async (r
             error: e.message
         });
     }
-});
+}
 
-appVisitantes.put("/update/:id", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
+/* appVisitantes.put("/update/:id", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
+    
+}); */
+export async function putVisitantes(req, res) {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -58,9 +67,12 @@ appVisitantes.put("/update/:id", middlewareVerify, proxyVisitantes, DTOData, asy
             error: e.message
         });
     }
-});
+}
 
-appVisitantes.delete("/delete/:id", middlewareVerify, async (req, res) => {
+/* appVisitantes.delete("/delete/:id", middlewareVerify, async (req, res) => {
+    
+}); */
+export async function deleteVisitantes(req, res) {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -80,5 +92,5 @@ appVisitantes.delete("/delete/:id", middlewareVerify, async (req, res) => {
             error: error.message
         });
     }
-});
+}
 export default appVisitantes;

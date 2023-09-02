@@ -4,11 +4,14 @@ import {con}from "../../db/atlas.js";
 import { DTOData, proxyMantenimientos, middlewareVerify } from "../../middleware/proxyMantenimientos.js";
 import { LimitQuery } from "../../helpers/config.js";
 
-const appMantenimiento = express();
-appMantenimiento.use(express.json());
-appMantenimiento.use(LimitQuery());
+// const appMantenimiento = express();
+// appMantenimiento.use(express.json());
+// appMantenimiento.use(LimitQuery());
 
-appMantenimiento.get("/", middlewareVerify, async (req, res) => {
+/* appMantenimiento.get("/", middlewareVerify, async (req, res) => {
+    
+}); */
+export async function getAllMantenimientos(req, res) {
     let db = await con();
     let collection = db.collection("mantenimiento");
     let result = await collection.find({}).toArray();
@@ -20,9 +23,12 @@ appMantenimiento.get("/", middlewareVerify, async (req, res) => {
     } else {
         res.send(result);
     }
-});
+}
 
-appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
+/* appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
+    
+}); */
+export async function postMantenimiento(req, res) {
     try {
         const db = await con();
         const collection = db.collection('mantenimiento');
@@ -42,9 +48,12 @@ appMantenimiento.post("/post", middlewareVerify, proxyMantenimientos, DTOData, a
             error: e.message
         });
     }
-});
+}
 
-appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
+/* appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
+    
+}); */
+export async function putMantenimiento(req, res) {
     try {
         let _id = parseInt(req.params.id);
         const db = await con();
@@ -67,9 +76,12 @@ appMantenimiento.put("/update/:id", middlewareVerify, proxyMantenimientos, DTODa
             error: e.message
         });
     }
-});
+}
 
-appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
+/* appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
+    
+}); */
+export async function deleteManteniemiento(req, res) {
     try {
         let id = parseInt(req.params.id);
         const db = await con();
@@ -89,5 +101,5 @@ appMantenimiento.delete("/delete/:id", middlewareVerify, async (req, res) => {
             error: error.message
         });
     }
-});
+}
 export default appMantenimiento;
