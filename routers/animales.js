@@ -1,6 +1,6 @@
 import express from "express";
 import * as animals from '../api/v1/animales';
-import { proxyAnimales, middlewareVerify, DTOData } from "../../middleware/proxyAnimales.js";
+import { proxyAnimales, middlewareVerify, DTOData } from "../middleware/proxyAnimales.js";
 import routesVersioning from 'express-routes-versioning';
 
 const appAnimales = express();
@@ -19,7 +19,7 @@ appAnimales.post('/' , middlewareVerify,proxyAnimales ,DTOData,version({
 appAnimales.put('/update/:id?', middlewareVerify,proxyAnimales ,DTOData, version({
     "1.0.0": animals.putAnimal
 }));
-appAnimales.delete('/delete/:id?', appMiddlewareParamArea, version({
+appAnimales.delete('/delete/:id?', middlewareVerify, version({
     "1.0.0": animals.deleteAnimal
 }));
 
