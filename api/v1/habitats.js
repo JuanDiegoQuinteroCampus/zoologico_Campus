@@ -24,6 +24,24 @@ export async function getAllHabitats(req, res) {
         res.send(result);
     }
 }
+export async function getIdHabitats(req, res) {
+    try {
+        let db = await con();
+        let collection = db.collection("habitats");
+        const id = Math.floor(req.params._id)
+        let result = await collection.find({_id: id},{projection: { nombre: 1, id_tipo_animal: 1, capacidad: 1 }}).toArray();
+        if (!result || result.length === 0) {
+            res.status(404).json({
+                status: 404,
+                message: "Not Found"
+            });
+        } else {
+            res.send(result);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
     
