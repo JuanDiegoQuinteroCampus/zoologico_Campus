@@ -1,38 +1,31 @@
 import express from "express";
-import { ObjectId } from "mongodb";
-import { con } from "../../db/atlas.js";
-import { proxyAnimales, middlewareVerify, DTOData } from "../../middleware/proxyAnimales.js";
-import { LimitQuery } from "../../helpers/config.js";
+import { ObjectId} from "mongodb";
+import {con}from "../../db/atlas.js";
 
-/* const appAnimales = express();
-appAnimales.use(express.json());
-appAnimales.use(LimitQuery());
- */
-/* appAnimales.get("/", middlewareVerify, async ) */
-export async function getAllAnimals(req, res) {
-    let db = await con();
-    let collection = db.collection("animales");
-    let result = await collection.find({}).toArray();
+export async function getAllAnimals(req, res){
     try {
+        let db = await con();
+        let collection = db.collection("animales");
+        let result = await collection.find({}).sort({_id: 1}).toArray();
         if (!result || result.length === 0) {
             res.status(404).json({
                 status: 404,
                 message: "Not Found"
             });
-        } else {
-            res.send(result);
-        }
+    } else {
+        res.send(result);
+    }
     } catch (error) {
         console.log(error);
     }
-
+    
 };
 
-export async function getAnimalById( req, res) {
-    const id = parseInt(req.query.id);
+export async function getAnimalById( req, res, animalId) {
+    let id = parseInt(animalId);
     let db = await con();
     let collection = db.collection("animales");
-    let result = await collection.findOne({ _id: id }).toArray();
+    let result = await collection.find({ _id: id }).toArray();
     try {
         if (!result || result.length === 0) {
             res.status(404).json({
@@ -45,20 +38,16 @@ export async function getAnimalById( req, res) {
     } catch (error) {
         console.log(error);
     }
-}
-
-/* appAnimales.post("/post", middlewareVerify, proxyAnimales, DTOData, async (req, res) => {
-   
-}); */
+};
 
 export async function postAnimal(req, res) {
     try {
         const db = await con();
         const collection = db.collection('animales');
-        await collection.insertOne({ ...req.body });
+        await collection.insertOne({...req.body});
         res.status(201).json({
             satus: 201,
-            message: "Data del Animal Insertada Exitosamente :)"
+            message: "Animal Insertado Exitosamente :)"
         });
     } catch (e) {
         res.status(500).json({
@@ -69,20 +58,16 @@ export async function postAnimal(req, res) {
     }
 };
 
-
-/* appAnimales.put("/update/:id", middlewareVerify, proxyAnimales, DTOData, async (req, res) => {
-
-}); */
-export async function putAnimal(req, res) {
+export async function putAnimal(req, res, animalId) {
     try {
-        let _id = parseInt(req.params.id);
+        let _id = parseInt(animalId);
         const db = await con();
         const collection = db.collection('animales');
         const updateData = req.body;
-        let result = await collection.updateOne({ _id: _id }, { $set: updateData })
-        result.matchedCount === 1 ?
-            res.send({ message: "Data del Animal Exitosamente Actualizada :)" }) :
-            res.send({ message: "No se encontró Data" });
+        let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
+        result.matchedCount === 1 ? 
+            res.status(201).json({ status:201, message: "Animal Exitosamente Actualizado :)" }):
+            res.status(404).json({ status:404, message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
         res.status(500).json({
@@ -91,15 +76,12 @@ export async function putAnimal(req, res) {
             error: e.message
         });
     }
+
 };
 
-
-/* appAnimales.delete("/delete/:id", middlewareVerify, async (req, res) => {
-   
-}); */
-export async function deleteAnimal(req, res) {
+export async function deleteAnimal(req, res, animalId) {
     try {
-        let id = parseInt(req.params.id);
+        let id = parseInt(animalId);
         const db = await con();
         const collection = db.collection('animales');
         await collection.deleteOne({
@@ -117,6 +99,4 @@ export async function deleteAnimal(req, res) {
             error: error.message
         });
     }
-}
-
-export default appAnimales;
+};
