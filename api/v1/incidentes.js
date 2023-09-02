@@ -24,6 +24,24 @@ export async function getAllIncidentes(req, res) {
         res.send(result);
     }
 }
+export async function getIdIncidentes(req, res) {
+    try {
+        let db = await con();
+        const id = Math.floor(req.params._id)
+        let collection = db.collection("incidentes");
+        let result = await collection.find({_id: id}).toArray();
+        if (!result || result.length === 0) {
+            res.status(404).json({
+                status: 404,
+                message: "Not Found"
+            });
+    } else {
+        res.send(result);
+    }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 /* appIncidentes.post("/post", middlewareVerify, proxyIncidentes, DTOData, async (req, res) => {
     
