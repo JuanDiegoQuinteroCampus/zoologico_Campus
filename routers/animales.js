@@ -1,6 +1,7 @@
 import express from "express";
-import * as animals from '../api/v1/animales';
+import * as animals from '../api/v1/animales.js';
 import { proxyAnimales, middlewareVerify, DTOData } from "../middleware/proxyAnimales.js";
+import { LimitQuery } from "../../helpers/config.js";
 import routesVersioning from 'express-routes-versioning';
 
 const appAnimales = express();
