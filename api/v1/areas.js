@@ -1,21 +1,12 @@
 import express from "express";
+import { ObjectId} from "mongodb";
 import {con}from "../../db/atlas.js";
-import { DTOData, proxyAreas, middlewareVerify } from "../../middleware/proxyAreas.js";
-import { LimitQuery } from "../../helpers/config.js";
-
-/* const appAreas = express();
-appAreas.use(express.json());
-appAreas.use(LimitQuery());
-
-appAreas.get("/", middlewareVerify, async (req, res) => {
-    
-}); */
 
 export async function getAllAreas(req, res){
     try {
         let db = await con();
         let collection = db.collection("areas");
-        let result = await collection.find({}).toArray();
+        let result = await collection.find({}).sort({_id: 1}).toArray();
         if (!result || result.length === 0) {
             res.status(404).json({
                 status: 404,
@@ -28,11 +19,27 @@ export async function getAllAreas(req, res){
         console.log(error);
     }
     
-}
+};
 
-// appAreas.post("/post", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
-    
-// });
+export async function getAreaById( req, res, areaId) {
+    let id = parseInt(areaId);
+    let db = await con();
+    let collection = db.collection("areas");
+    let result = await collection.find({ _id: id }).toArray();
+    try {
+        if (!result || result.length === 0) {
+            res.status(404).json({
+                status: 404,
+                message: "Not Found"
+            });
+        } else {
+            res.send(result);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export async function postAreas(req, res) {
     try {
         const db = await con();
@@ -49,22 +56,18 @@ export async function postAreas(req, res) {
             error: e.message
         });
     }
-}
+};
 
-
-// appAreas.put("/update/:id", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
-    
-// });
-export async function putAreas(req,res) {
+export async function putAreas(req, res, areaId) {
     try {
-        let _id = parseInt(req.params.id);
+        let _id = parseInt(areaId);
         const db = await con();
         const collection = db.collection('areas');
         const updateData = req.body;
         let result = await collection.updateOne({ _id: _id }, { $set: updateData }) 
         result.matchedCount === 1 ? 
-            res.send({ message: "Area Exitosamente Actualizada :)" }):
-            res.send({ message: "No se encontró Data" });
+            res.status(201).json({ status:201, message: "Area Exitosamente Actualizada :)" }):
+            res.status(404).json({ status:404, message: "No se encontró Data" });
     } catch (e) {
         console.error(e);
         res.status(500).json({
@@ -73,15 +76,12 @@ export async function putAreas(req,res) {
             error: e.message
         });
     }
-}
 
+};
 
-// appAreas.delete("/delete/:id", middlewareVerify, async (req, res) => {
-    
-// });
-export async function deleteAreas(req, res) {
+export async function deleteAreas(req, res, areaId) {
     try {
-        let id = parseInt(req.params.id);
+        let id = parseInt(areaId);
         const db = await con();
         const collection = db.collection('areas');
         await collection.deleteOne({
@@ -99,5 +99,4 @@ export async function deleteAreas(req, res) {
             error: error.message
         });
     }
-}
-export default appAreas;
+};
