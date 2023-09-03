@@ -49,7 +49,7 @@ appHabitatV2.use((req, res, next) => {
     }
 });
 
-appHabitatV2.get("/capacidad/:id", /* middlewareVerify, middlewareParamHabitats, */ (req, res, next) => {
+appHabitatV2.get("/capacidad/:id", middlewareVerify, middlewareParamHabitats, (req, res, next) => {
     const habitatid = req.params.id; 
     getIdHabitats(req, res, habitatid)
 });

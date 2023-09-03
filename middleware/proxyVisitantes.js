@@ -30,19 +30,25 @@ proxyVisitantes.use(async (req, res, next) => {
   }
 });
 
-middlewareVerify.use((req, res, next) => {
+middlewareVerify.use(async (req, res, next) => {
   if (!req.rateLimit) return;
-  if (req.data && req.data.payload) {
-    let { payload } = req.data;
-    const { iat, exp, ...newPayload } = payload;
-    payload = newPayload;
-    let Clone = JSON.stringify(classToPlain(plainToClass(DTO("visitantes").class, {}, { ignoreDecorators: true })));
-    let Verify = Clone === JSON.stringify(payload);
-    if (!Verify) {
-      return res.status(406).send({ status: 406, message: "No Autorizado" });
-    }
+  const { authorization } = req.headers;
+  if (!authorization) {
+      return res.status(400).send({ status: 400, message: "Falta Token de Autorización" });
   }
-  next();
+  try {
+      const encoder = new TextEncoder();
+      const jwtData = await jwtVerify(
+          authorization,
+          encoder.encode(process.env.JWT_PRIVATE_KEY)
+      );
+      if (!jwtData || !jwtData.payload || !jwtData.payload.id) {
+          return res.status(401).send({ status: 401, message: "Token no válido" });
+      }
+      next();
+  } catch (error) {
+      res.status(500).send({ status: 500, message: "Error en la verificación del token" });
+  }
 });
 
 DTOData.use(async (req, res, next) => {

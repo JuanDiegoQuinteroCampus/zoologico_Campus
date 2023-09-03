@@ -33,24 +33,18 @@ proxyIncidentes.use(async (req, res, next) => {
 middlewareVerify.use((req, res, next) => {
   if (!req.rateLimit) return;
   let { payload } = req.data;
-  const { iat, exp, ...newPayload } = payload;
-  payload = newPayload;
-  const payloadDateObjects = {
-    ...payload,
-    fecha_incidente: new Date(payload.fecha_incidente)
+  const modifiedPayload = {
+      ...payload,
+      fecha_incidente: new Date(payload.fecha_incidente)
   };
-  const Clone = {
-    ...payload,
-    fecha_incidente: new Date(payload.fecha_incidente)
-  };
-  const Verify = JSON.stringify(Clone).replace(/\s+/g, '') === JSON.stringify(payloadDateObjects).replace(/\s+/g, '');
+  const isEqual = JSON.stringify(modifiedPayload).replace(/\s+/g, '') === JSON.stringify(payload).replace(/\s+/g, '');
   req.data = undefined;
-  if (!Verify) {
-    console.log("No Autorizado");
-    res.status(406).send({ status: 406, message: "No Autorizado" });
+  if (!isEqual) {
+      console.log("No Autorizado");
+      res.status(406).send({ status: 406, message: "No Autorizado" });
   } else {
-    console.log("Autorizado");
-    next();
+      console.log("Autorizado");
+      next();
   }
 });
 
