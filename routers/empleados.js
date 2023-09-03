@@ -33,4 +33,23 @@ appEmpleados.delete("/delete/:id", middlewareVerify, async (req, res) => {
     deleteEmpleados(req, res, empleadoId)
 });
 
-export default appEmpleados;
+const appEmpleadosV2 = express();
+appEmpleadosV2.use(express.json());
+appEmpleadosV2.use(LimitQuery());
+appEmpleadosV2.use((req, res, next) => {
+    const apiVersion = req.headers["x-api"];
+    if (apiVersion === "1.1") {
+        next();
+    } else {
+        res.status(400).json({
+            status: 400,
+            message: "API Version No Compatible :("
+        });
+    }
+});
+appEmpleadosV2.get("/area/:id", middlewareVerify, middlewareParamEmpleados,(req, res, next) => {
+    const empleareasId = req.params.id; 
+    getEmpleadoById(req, res, empleareasId)
+});
+
+export {appEmpleados, appEmpleadosV2};
