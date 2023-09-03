@@ -22,6 +22,7 @@ app.use("/token", appToken)
 app.use("/animales", appVerify, appAnimales);
 app.use("/areas", appVerify, appAreas);
 app.use("/bodegas", appVerify, appBodegas);
+
 // *Tener en cuenta el orden de versiones, no puede ir version uno primero
 app.use("/empleados/v2", appVerify, appEmpleadosV2);
 app.use("/empleados", appVerify, appEmpleados);
@@ -39,8 +40,6 @@ app.use("/tipoAnimales/v2", appVerify, appTipoAnimalV2);
 app.use("/tipoAnimales", appVerify, appTipoAnimal);
 
 app.use("/visitantes", appVerify, appVisitantes);
-
-
 
 
 app.listen(config, ()=> {
