@@ -1,10 +1,36 @@
 import express from "express";
-import * as habitats from '../api/v1/habitats.js';
-import routesVersioning from 'express-routes-versioning';
-import { DTOData, proxyHabitats, middlewareVerify } from "../middleware/proxyHabitats.js";
-import { LimitQuery } from "../../helpers/config.js";
+import { getAllHabitats, getHabitatById, postHabitats, putHabitats, deleteHabitats } from "../api/v1/habitats.js";
+import { proxyHabitats, middlewareVerify, DTOData, middlewareParamHabitats } from "../middleware/proxyHabitats.js";
+import { LimitQuery } from "../helpers/config.js";
 
 const appHabitats = express();
 appHabitats.use(express.json());
 appHabitats.use(LimitQuery());
-const version = routesVersioning();
+appHabitats.use((req, res, next) => {
+    const apiVersion = req.headers["x-api"];
+    if (apiVersion === "1.0") {
+        next();
+    } else {
+        res.status(400).json({
+            status: 400,
+            message: "API Version No Compatible :("
+        });
+    }
+});
+
+appHabitats.get("/all", middlewareVerify, getAllHabitats);
+appHabitats.get("/:id", middlewareVerify, middlewareParamHabitats,(req, res, next) => {
+    const habitatId = req.params.id; 
+    getHabitatById(req, res, habitatId)
+});
+appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, postHabitats);
+appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
+    const habitatId = req.params.id; 
+    putHabitats(req, res, habitatId)
+});
+appHabitats.delete("/delete/:id", middlewareVerify, async (req, res) => {
+    const habitatId = req.params.id; 
+    deleteHabitats(req, res, habitatId)
+});
+
+export default appHabitats;

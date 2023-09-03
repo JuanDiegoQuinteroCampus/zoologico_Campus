@@ -17,7 +17,7 @@ export async function getAllMantenimientos(req, res) {
     }
 };
 
-export async function getHabitatById(req, res, mantenimientoId) {
+export async function getMantenimientoById(req, res, mantenimientoId) {
     let id = parseInt(mantenimientoId);
     let db = await con();
     let collection = db.collection("mantenimiento");
