@@ -6,6 +6,7 @@ import { LimitQuery } from "../helpers/config.js";
 const appAreas = express();
 appAreas.use(express.json());
 appAreas.use(LimitQuery());
+
 appAreas.use((req, res, next) => {
     const apiVersion = req.headers["x-api"];
     if (apiVersion === "1.0") {
