@@ -83,7 +83,7 @@ export async function putMantenimiento(req, res, mantenimientoId) {
     }
 };
 
-export async function deleteManteniemiento(req, res, mantenimientoId) {
+export async function deleteMantenimiento(req, res, mantenimientoId) {
     try {
         let id = parseInt(mantenimientoId);
         const db = await con();

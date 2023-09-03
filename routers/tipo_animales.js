@@ -1,5 +1,6 @@
 import express from "express";
 import { getAllTipoAnimal, getTipoAnimalById, postTipoAnimal, putTipoAnimal, deleteTipoAnimal } from "../api/v1/tipo_animales.js";
+import { getIdTipoAni, getPeligroAnimal } from '../api/v2/tipo_animales.js'
 import { proxyTipoAnimal, middlewareVerify, DTOData, middlewareParamTipAni } from "../middleware/proxyTipoAnimal.js";
 import { LimitQuery } from "../helpers/config.js";
 
@@ -33,4 +34,26 @@ appTipoAnimal.delete("/delete/:id", middlewareVerify, async (req, res) => {
     deleteTipoAnimal(req, res, tipoAnimalId)
 });
 
-export default appTipoAnimal;
+
+const appTipoAnimalV2 = express();
+appTipoAnimalV2.use(express.json());
+appTipoAnimalV2.use(LimitQuery());
+appTipoAnimalV2.use((req, res, next) => {
+    const apiVersion = req.headers["x-api"];
+    if (apiVersion === "1.1") {
+        next();
+    } else {
+        res.status(400).json({
+            status: 400,
+            message: "API Version No Compatible :("
+        });
+    }
+});
+
+appTipoAnimalV2.get("/comportamiento/:id", middlewareVerify, middlewareParamTipAni,(req, res, next) => {
+    const tipoanimalId = req.params.id; 
+    getIdTipoAni(req, res, tipoanimalId)
+});
+
+appTipoAnimalV2.get("/conservacion/peligro", middlewareVerify, getPeligroAnimal)  ;
+export  {appTipoAnimal, appTipoAnimalV2};
