@@ -526,74 +526,48 @@ db.bodegas.insertMany([
 ]);
 
 db.createCollection("usuarios", {
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["_id", "username","password" , "token", "id_rol"],
-    properties:{
-      _id: {
-        bsonType: "number",
-        description: "_id debe ser de tipo int",
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["_id", "username", "password", "id_rol", "tokens"],
+        properties: {
+          _id: {
+            bsonType: "int",
+            description: "ID de usuario (entero)",
+          },
+          username: {
+            bsonType: "string",
+            description: "Nombre de usuario",
+          },
+          password: {
+            bsonType: "string",
+            description: "Contraseña (hash)",
+          },
+          id_rol: {
+            bsonType: "int",
+            description: "ID del rol del usuario (entero)",
+          },
+          tokens: {
+            bsonType: "array",
+            description: "Tokens de acceso generados para el usuario",
+            items: {
+              bsonType: "object",
+              required: ["token"],
+              properties: {
+                token: {
+                  bsonType: "string",
+                  description: "Token de acceso (cadena)",
+                },
+                expiracion: {
+                  bsonType: "date",
+                  description: "Fecha de expiración del token",
+                },
+              },
+            },
+          },
+        },
       },
-      username: {
-        bsonType: "string",
-        description: "username debe ser de tipo string",
-      },
-      password: {
-        bsonType: "string",
-        description: "password debe ser de tipo string",
-      },
-      token: {
-        bsonType: "string",
-        description: "token debe ser de tipo string",
-      },
-      id_rol: {
-        bsonType: "number",
-        description: "id_rol debe ser de tipo int",
-      },
-    }},
-  },
-});
-db.createCollection("roles", {
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["_id", "roles"],
-      properties:{
-      _id: {
-        bsonType: "number",
-        description: "_id debe ser de tipo int",
-      },
-      roles: {
-        bsonType: "string",
-        description: "roles debe ser de tipo string",
-      },
-    }},
-  },
-});
+    },
+  });
 
-use("db_zoologico");
-db.usuarios.insertMany([
-  { 
-    _id: 1, 
-    username: "usuario1",
-    token: "miTokenSecreto", 
-    id_rol: 1 
-},
-  { 
-    _id: 2, 
-    username: "admin1", 
-    token: "otroTokenSecreto", 
-    id_rol: 2 
-},
-]);
-db.roles.insertMany([
-  { 
-    _id: 1, 
-    roles: "usuario" 
-},
-  { 
-    _id: 2, 
-    roles: "admin" 
-},
-]);
+  
