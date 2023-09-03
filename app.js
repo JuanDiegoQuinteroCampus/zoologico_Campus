@@ -1,14 +1,14 @@
 import express  from "express";
 import dotenv from "dotenv";
 import appAnimales from "./routers/animales.js";
-import appAreas from './api/v1/areas.js';
-import appEmpleados from "./api/v1/empleados.js";
-import appHabitats from "./api/v1/habitats.js";
-import appIncidentes from "./api/v1/incidentes.js";
-import appMantenimiento from "./api/v1/mantenimiento.js";
-import appTipoAnimales from "./api/v1/tipo_animales.js";
-import appVisitantes from "./api/v1/visitantes.js";
-import appBodegas from "./api/v1/bodegas.js";
+import appAreas from './routers/areas.js';
+import appBodegas from "./routers/bodegas.js";
+import appEmpleados from "./routers/empleados.js";
+import appHabitats from "./routers/habitats.js";
+import appIncidentes from "./routers/incidentes.js";
+import appMantenimiento from "./routers/mantenimiento.js";
+import appTipoAnimales from "./routers/tipo_animales.js";
+import appVisitantes from "./routers/visitantes.js";
 import { appToken, appVerify } from "./helpers/token.js";
 
 dotenv.config();
