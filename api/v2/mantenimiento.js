@@ -1,6 +1,6 @@
 import express from "express";
 import { ObjectId} from "mongodb";
-import {con}from "../db/atlas.js";
+import {con}from "../../db/atlas.js";
 
 
 export async function  getDataEmpleado(req, res, manteEmpleadoId) {
