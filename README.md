@@ -245,7 +245,7 @@ El token se genera como una llave de acceso según los usuarios YA registrados e
 1.  En su navegador web o cliente de API, ingrese la siguiente URL con el nombre de la colección deseada para obtener un token:
 
 ```
-Method: POST
+Method: GET
 
 http://localhost:7777/login
 ```
