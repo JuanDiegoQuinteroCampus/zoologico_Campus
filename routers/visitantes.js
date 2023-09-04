@@ -1,6 +1,6 @@
 import express from "express";
 import { getAllVisitantes, getVisitanteById, postVisitantes, putVisitantes, deleteVisitantes } from "../api/v1/visitantes.js";
-import { proxyVisitantes, middlewareVerify, /* DTOData, */ middlewareParamVisitantes } from "../middleware/proxyVisitantes.js";
+import { proxyVisitantes, middlewareVerify, DTOData, middlewareParamVisitantes } from "../middleware/proxyVisitantes.js";
 import { LimitQuery } from "../helpers/config.js";
 
 const appVisitantes = express();
@@ -23,8 +23,8 @@ appVisitantes.get("/:id", middlewareVerify, middlewareParamVisitantes,(req, res,
     const visitanteId = req.params.id; 
     getVisitanteById(req, res, visitanteId)
 });
-appVisitantes.post("/post", middlewareVerify, proxyVisitantes, /* DTOData, */ postVisitantes);
-appVisitantes.put("/update/:id", middlewareVerify, proxyVisitantes, /* DTOData, */ async (req, res) => {
+appVisitantes.post("/post", middlewareVerify, proxyVisitantes, DTOData, postVisitantes);
+appVisitantes.put("/update/:id", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
     const visitanteId = req.params.id; 
     putVisitantes(req, res, visitanteId)
 });

@@ -3,13 +3,13 @@ import express from "express";
 import { plainToClass, classToPlain } from 'class-transformer';
 import { validationResult } from 'express-validator';
 import { validate } from 'class-validator';
-/* import { DTO } from "../helpers/token.js"; */
+import { DTO } from "../helpers/token.js";
 import { Router } from "express";
 import { Empleados } from '../dtocontroller/empleados.js';
 import { parametro } from '../validator/params.js';
 
 const middlewareVerify = Router();
-/* const DTOData = Router(); */
+const DTOData = Router();
 const proxyEmpeados = express();
 const middlewareParamEmpleados = Router();
 
@@ -30,25 +30,38 @@ proxyEmpeados.use(async (req, res, next) => {
   }
 });
 
+
+
 middlewareVerify.use((req, res, next) => {
-  if (!req.rateLimit) return;
-  let { payload } = req.data;
-  const modifiedPayload = {
-      ...payload,
-      fecha_nac: new Date(payload.fecha_nac)
-  };
-  const isEqual = JSON.stringify(modifiedPayload).replace(/\s+/g, '') === JSON.stringify(payload).replace(/\s+/g, '');
-  req.data = undefined;
-  if (!isEqual) {
-      console.log("No Autorizado");
-      res.status(406).send({ status: 406, message: "No Autorizado" });
-  } else {
-      console.log("Autorizado");
-      next();
+  if (!req.rateLimit) return; 
+
+  if (req.data && req.data.payload) {
+      let { payload } = req.data;
+      const { iat, exp, ...newPayload } = payload;
+      payload = newPayload;
+
+      const payloadDateObjects = {
+          ...payload,
+          fecha_nac: new Date(payload.fecha_nac)
+      };
+
+      const Clone = {
+          ...payload,
+          fecha_nac: new Date(payload.fecha_nac)
+      };
+
+      const VerifyDate = JSON.stringify(Clone).replace(/\s+/g, '') === JSON.stringify(payloadDateObjects).replace(/\s+/g, '');
+
+      if (!VerifyDate) {
+         
+          return res.status(406).send({ status: 406, message: "No Autorizado" });
+      }
   }
+
+  next();
 });
 
-/* DTOData.use(async (req, res, next) => {
+DTOData.use(async (req, res, next) => {
   try {
     let data = plainToClass(DTO("empleados").class, req.body);
     await validate(data);
@@ -58,7 +71,7 @@ middlewareVerify.use((req, res, next) => {
   } catch (err) {
     res.status(err.status).send(err)
   }
-}); */
+});
 
 middlewareParamEmpleados.use(parametro, (req, res, next) => {
   const errors = validationResult(req);
@@ -69,7 +82,7 @@ middlewareParamEmpleados.use(parametro, (req, res, next) => {
 
 export {
   middlewareVerify,
-/*   DTOData, */
+  DTOData,
   proxyEmpeados,
   middlewareParamEmpleados
 };
