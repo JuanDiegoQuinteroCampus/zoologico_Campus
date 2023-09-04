@@ -1,7 +1,7 @@
 import express from "express";
 import { getAllTipoAnimal, getTipoAnimalById, postTipoAnimal, putTipoAnimal, deleteTipoAnimal } from "../api/v1/tipo_animales.js";
 import { getIdTipoAni, getPeligroAnimal } from '../api/v2/tipo_animales.js'
-import { proxyTipoAnimal, middlewareVerify, /* DTOData, */ middlewareParamTipAni } from "../middleware/proxyTipoAnimal.js";
+import { proxyTipoAnimal, middlewareVerify, DTOData, middlewareParamTipAni } from "../middleware/proxyTipoAnimal.js";
 import { LimitQuery } from "../helpers/config.js";
 
 const appTipoAnimal = express();
@@ -24,8 +24,8 @@ appTipoAnimal.get("/:id", middlewareVerify, middlewareParamTipAni,(req, res, nex
     const tipoAnimalId = req.params.id; 
     getTipoAnimalById(req, res, tipoAnimalId)
 });
-appTipoAnimal.post("/post", middlewareVerify, proxyTipoAnimal, /* DTOData, */ postTipoAnimal);
-appTipoAnimal.put("/update/:id", middlewareVerify, proxyTipoAnimal, /* DTOData, */ async (req, res) => {
+appTipoAnimal.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, postTipoAnimal);
+appTipoAnimal.put("/update/:id", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
     const tipoAnimalId = req.params.id; 
     putTipoAnimal(req, res, tipoAnimalId)
 });

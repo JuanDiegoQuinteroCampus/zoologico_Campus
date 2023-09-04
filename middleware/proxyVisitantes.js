@@ -3,13 +3,13 @@ import express from "express";
 import { plainToClass, classToPlain } from 'class-transformer';
 import { validate } from 'class-validator';
 import { validationResult } from 'express-validator';
-/* import { DTO } from "../helpers/token.js"; */
+import { DTO } from "../helpers/token.js";
 import { Router } from "express";
 import { Visitantes } from '../dtocontroller/visitantes.js';
 import { parametro } from '../validator/params.js';
 
 const middlewareVerify = Router();
-/* const DTOData = Router(); */
+const DTOData = Router();
 const proxyVisitantes = express();
 const middlewareParamVisitantes = Router();
 
@@ -30,28 +30,22 @@ proxyVisitantes.use(async (req, res, next) => {
   }
 });
 
-middlewareVerify.use(async (req, res, next) => {
+middlewareVerify.use((req, res, next) => {
   if (!req.rateLimit) return;
-  const { authorization } = req.headers;
-  if (!authorization) {
-      return res.status(400).send({ status: 400, message: "Falta Token de Autorización" });
+  if (req.data && req.data.payload) {
+    let { payload } = req.data;
+    const { iat, exp, ...newPayload } = payload;
+    payload = newPayload;
+    let Clone = JSON.stringify(classToPlain(plainToClass(DTO("visitantes").class, {}, { ignoreDecorators: true })));
+    let Verify = Clone === JSON.stringify(payload);
+    if (!Verify) {
+      return res.status(406).send({ status: 406, message: "No Autorizado" });
+    }
   }
-  try {
-      const encoder = new TextEncoder();
-      const jwtData = await jwtVerify(
-          authorization,
-          encoder.encode(process.env.JWT_PRIVATE_KEY)
-      );
-      if (!jwtData || !jwtData.payload || !jwtData.payload.id) {
-          return res.status(401).send({ status: 401, message: "Token no válido" });
-      }
-      next();
-  } catch (error) {
-      res.status(500).send({ status: 500, message: "Error en la verificación del token" });
-  }
+  next();
 });
 
-/* DTOData.use(async (req, res, next) => {
+DTOData.use(async (req, res, next) => {
   try {
     let data = plainToClass(DTO("visitantes").class, req.body);
     await validate(data);
@@ -61,7 +55,7 @@ middlewareVerify.use(async (req, res, next) => {
   } catch (err) {
     res.status(err.status).send(err)
   }
-}); */
+});
 
 middlewareParamVisitantes.use(parametro, (req, res, next) => {
   const errors = validationResult(req);
@@ -71,7 +65,7 @@ middlewareParamVisitantes.use(parametro, (req, res, next) => {
 
 export {
   middlewareVerify,
-/*   DTOData, */
+  DTOData,
   proxyVisitantes,
   middlewareParamVisitantes
 };

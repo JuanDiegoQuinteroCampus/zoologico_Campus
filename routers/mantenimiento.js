@@ -1,7 +1,7 @@
 import express from "express";
 import { getAllMantenimientos, getMantenimientoById, postMantenimiento, putMantenimiento, deleteMantenimiento } from "../api/v1/mantenimiento.js";
 import { getDataEmpleado } from '../api/v2/mantenimiento.js'
-import { proxyMantenimientos, middlewareVerify, /* DTOData, */ middlewareParamMante } from "../middleware/proxyMantenimientos.js";
+import { proxyMantenimientos, middlewareVerify, DTOData, middlewareParamMante } from "../middleware/proxyMantenimientos.js";
 import { LimitQuery } from "../helpers/config.js";
 
 const appMantenimientos = express();
@@ -26,8 +26,8 @@ appMantenimientos.get("/:id", middlewareVerify, middlewareParamMante,(req, res, 
     const mantenimientoId = req.params.id; 
     getMantenimientoById(req, res, mantenimientoId)
 });
-appMantenimientos.post("/post", middlewareVerify, proxyMantenimientos, /* DTOData, */ postMantenimiento);
-appMantenimientos.put("/update/:id", middlewareVerify, proxyMantenimientos, /* DTOData, */ async (req, res) => {
+appMantenimientos.post("/post", middlewareVerify, proxyMantenimientos, DTOData, postMantenimiento);
+appMantenimientos.put("/update/:id", middlewareVerify, proxyMantenimientos, DTOData, async (req, res) => {
     const mantenimientoId = req.params.id; 
     putMantenimiento(req, res, mantenimientoId)
 });

@@ -3,13 +3,13 @@ import express from "express";
 import { plainToClass, classToPlain } from 'class-transformer';
 import { validate } from 'class-validator';
 import { validationResult } from 'express-validator';
-/* import { DTO } from "../helpers/token.js"; */
+import { DTO } from "../helpers/token.js";
 import { Router } from "express";
 import { Mantenimientos } from '../dtocontroller/mantenimientos.js';
 import { parametro } from '../validator/params.js';
 
 const middlewareVerify = Router();
-/* const DTOData = Router(); */
+const DTOData = Router();
 const proxyMantenimientos = express();
 const middlewareParamMante = Router();
 
@@ -33,13 +33,19 @@ proxyMantenimientos.use(async (req, res, next) => {
 middlewareVerify.use((req, res, next) => {
   if (!req.rateLimit) return;
   let { payload } = req.data;
-  const modifiedPayload = {
+  const { iat, exp, ...newPayload } = payload;
+  payload = newPayload;
+  const payloadDateObjects = {
     ...payload,
     fecha_mantenimiento: new Date(payload.fecha_mantenimiento)
   };
-  const isEqual = JSON.stringify(modifiedPayload).replace(/\s+/g, '') === JSON.stringify(payload).replace(/\s+/g, '');
+  const Clone = {
+    ...payload,
+    fecha_mantenimiento: new Date(payload.fecha_mantenimiento)
+  };
+  const Verify = JSON.stringify(Clone).replace(/\s+/g, '') === JSON.stringify(payloadDateObjects).replace(/\s+/g, '');
   req.data = undefined;
-  if (!isEqual) {
+  if (!Verify) {
     console.log("No Autorizado");
     res.status(406).send({ status: 406, message: "No Autorizado" });
   } else {
@@ -48,8 +54,7 @@ middlewareVerify.use((req, res, next) => {
   }
 });
 
-
-/* DTOData.use(async (req, res, next) => {
+DTOData.use(async (req, res, next) => {
   try {
     let data = plainToClass(DTO("mantenimientos").class, req.body);
     await validate(data);
@@ -59,7 +64,7 @@ middlewareVerify.use((req, res, next) => {
   } catch (err) {
     res.status(err.status).send(err)
   }
-}); */
+});
 
 middlewareParamMante.use(parametro, (req, res, next) => {
   const errors = validationResult(req);
@@ -69,7 +74,7 @@ middlewareParamMante.use(parametro, (req, res, next) => {
 
 export {
   middlewareVerify,
-/*   DTOData, */
+  DTOData,
   proxyMantenimientos,
   middlewareParamMante
 };
