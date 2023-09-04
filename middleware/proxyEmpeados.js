@@ -3,13 +3,13 @@ import express from "express";
 import { plainToClass, classToPlain } from 'class-transformer';
 import { validationResult } from 'express-validator';
 import { validate } from 'class-validator';
-import { DTO } from "../helpers/token.js";
+/* import { DTO } from "../helpers/token.js"; */
 import { Router } from "express";
 import { Empleados } from '../dtocontroller/empleados.js';
 import { parametro } from '../validator/params.js';
 
 const middlewareVerify = Router();
-const DTOData = Router();
+/* const DTOData = Router(); */
 const proxyEmpeados = express();
 const middlewareParamEmpleados = Router();
 
@@ -48,7 +48,7 @@ middlewareVerify.use((req, res, next) => {
   }
 });
 
-DTOData.use(async (req, res, next) => {
+/* DTOData.use(async (req, res, next) => {
   try {
     let data = plainToClass(DTO("empleados").class, req.body);
     await validate(data);
@@ -58,7 +58,7 @@ DTOData.use(async (req, res, next) => {
   } catch (err) {
     res.status(err.status).send(err)
   }
-});
+}); */
 
 middlewareParamEmpleados.use(parametro, (req, res, next) => {
   const errors = validationResult(req);
@@ -69,7 +69,7 @@ middlewareParamEmpleados.use(parametro, (req, res, next) => {
 
 export {
   middlewareVerify,
-  DTOData,
+/*   DTOData, */
   proxyEmpeados,
   middlewareParamEmpleados
 };

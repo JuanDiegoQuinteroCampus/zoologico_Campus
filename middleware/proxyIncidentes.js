@@ -3,13 +3,13 @@ import express from "express";
 import { plainToClass, classToPlain } from 'class-transformer';
 import { validate } from 'class-validator';
 import { validationResult } from 'express-validator';
-import { DTO } from "../helpers/token.js";
+/* import { DTO } from "../helpers/token.js"; */
 import { Router } from "express";
 import { Incidentes } from '../dtocontroller/incidentes.js';
 import { parametro } from '../validator/params.js';
 
 const middlewareVerify = Router();
-const DTOData = Router();
+/* const DTOData = Router(); */
 const proxyIncidentes = express();
 const middlewareParamIncidentes = Router();
 
@@ -48,7 +48,7 @@ middlewareVerify.use((req, res, next) => {
   }
 });
 
-DTOData.use(async (req, res, next) => {
+/* DTOData.use(async (req, res, next) => {
   try {
     let data = plainToClass(DTO("incidentes").class, req.body);
     await validate(data);
@@ -59,7 +59,7 @@ DTOData.use(async (req, res, next) => {
     res.status(err.status).send(err)
   }
 });
-
+ */
 middlewareParamIncidentes.use(parametro, (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
@@ -68,7 +68,7 @@ middlewareParamIncidentes.use(parametro, (req, res, next) => {
 
 export {
   middlewareVerify,
-  DTOData,
+/*   DTOData, */
   proxyIncidentes,
   middlewareParamIncidentes
 };

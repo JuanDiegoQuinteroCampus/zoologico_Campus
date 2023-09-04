@@ -1,7 +1,7 @@
 import express from "express";
 import { getAllHabitats, getHabitatById, postHabitats, putHabitats, deleteHabitats } from "../api/v1/habitats.js";
 import { getIdHabitats } from '../api/v2/habitat.js';
-import { proxyHabitats, middlewareVerify, DTOData, middlewareParamHabitats } from "../middleware/proxyHabitats.js";
+import { proxyHabitats, middlewareVerify, /* DTOData, */ middlewareParamHabitats } from "../middleware/proxyHabitats.js";
 import { LimitQuery } from "../helpers/config.js";
 
 const appHabitats = express();
@@ -24,8 +24,8 @@ appHabitats.get("/:id", middlewareVerify, middlewareParamHabitats,(req, res, nex
     const habitatId = req.params.id; 
     getHabitatById(req, res, habitatId)
 });
-appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, postHabitats);
-appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
+appHabitats.post("/post", middlewareVerify, proxyHabitats, /* DTOData, */ postHabitats);
+appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, /* DTOData, */ async (req, res) => {
     const habitatId = req.params.id; 
     putHabitats(req, res, habitatId)
 });
