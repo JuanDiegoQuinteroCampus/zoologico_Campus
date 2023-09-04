@@ -177,55 +177,11 @@ Siga estos pasos para instalar y ejecutar el proyecto:
 
 4. En otra terminal, sin cerrar la anterior, compile el archivo `tsconfig.json` con `npm run tsc` en otra consola.
 
-5. Para que la base de datos con mongoAtlas funcione, puede utilizar la extension `MongoDB for VS Code` se debe acceder al playground a través del Conecction String dado por Atlas de esta forma: `mongodb+srv://username:<password>@cluster0.zth9y42.mongodb.net/
+5. Para que la base de datos con mongoAtlas funcione, puede utilizar la extension `MongoDB for VS Code` se debe acceder al playground a través del Conecction String dado por Atlas de esta forma: `mongodb+srv://username:<password>@cluster0.zth9y42.mongodb.net/`
 
 6. Acceda a la carpeta `db` en su entorno de MongoDB y ejecute el contenido del archivo `zoo.mongodb` (Teniendo en cuenta que debe estar conecctado con el playground anterior) para configurar la base de datos y las colecciones (solo es necesario darle Run).
 
-7. Proceda con el paso [Generar Tokens](#generar-tokens) para poder utilizar los puntos finales.
-
-
-
-## Generar Tokens (JWT)🔑
-
-Para utilizar los puntos finales, deberá generar tokens para cada colección. Siga estos pasos:
-
-1. En su navegador web o cliente de API, ingrese la siguiente URL con el nombre de la colección deseada para obtener un token:
-
-   ```
-   http://localhost:7777/token/:collection
-   ```
-
-   Reemplace `:collection` con uno de los siguientes nombres:
-
-   - animales
-   - areas
-   - bodegas
-   - empleados
-   - habitats
-   - incidentes
-   - mantenimientos
-   - tipoAnimales
-   - visitantes
-
-2. Copie el token generado.
-
-3. Abra su cliente de API (como Postman) y configure Header:
-
-   ```
-   Authorization: Token generado
-   ```
-
-4. Si está utilizando Thunder Client:
-
-   1. Debe crear una nueva solicitud.
-   2. Vaya a la sección "Headers".
-   3. En las cabeceras HTTP, puede ingresar:
-
-   ```
-   Autorización: Token generado
-   ```
-
-   Asegúrese de reemplazar "Token generado" con el token que copió.
+   
 
 
 
@@ -235,35 +191,35 @@ Para este proyecto, utilizamos versiones de la API para garantizar un mejor rend
 
 - Para la versión 1.0 de la API:
 
-    ```javascript
-    appIncidentes.use((req, res, next) => {
-        const apiVersion = req.headers["x-api"];
-        if (apiVersion === "1.0") {
-            next();
-        } else {
-            res.status(400).json({
-                status: 400,
-                message: "Versión de API No Compatible :("
-            });
-        }
-    });
-    ```
+  ```javascript
+  appIncidentes.use((req, res, next) => {
+      const apiVersion = req.headers["x-api"];
+      if (apiVersion === "1.0") {
+          next();
+      } else {
+          res.status(400).json({
+              status: 400,
+              message: "Versión de API No Compatible :("
+          });
+      }
+  });
+  ```
 
 - Para la versión 1.1 de la API:
 
-    ```javascript
-    appIncidentes.use((req, res, next) => {
-        const apiVersion = req.headers["x-api"];
-        if (apiVersion === "1.1") {
-            next();
-        } else {
-            res.status(400).json({
-                status: 400,
-                message: "Versión de API No Compatible :("
-            });
-        }
-    });
-    ```
+  ```javascript
+  appIncidentes.use((req, res, next) => {
+      const apiVersion = req.headers["x-api"];
+      if (apiVersion === "1.1") {
+          next();
+      } else {
+          res.status(400).json({
+              status: 400,
+              message: "Versión de API No Compatible :("
+          });
+      }
+  });
+  ```
 
 Asegúrese de incluir los encabezados de la versión adecuada en sus solicitudes para garantizar una comunicación correcta con la API.
 
@@ -273,32 +229,75 @@ x-api : 1.0 / 1.1
 
 
 
+## Login (passport-http-bearer)🔑
+
+El token se genera como una llave de acceso según los usuarios YA registrados en la base de datos, esto se hace a partir de la siguiente URL:
+
+1.  En su navegador web o cliente de API, ingrese la siguiente URL con el nombre de la colección deseada para obtener un token:
+
+```
+Method: POST
+
+http://localhost:7777/login
+```
+
+2. Abra su cliente de API (como Postman O ThunderClient) y debes pasar el siguiente body:
+
+```
+Sintaxis:
+    {
+        "username": "RegistedUsername",
+        "password": "RegistedPassword"
+    }
+
+Example: 
+    {
+		"username": "Vicky",
+		"password": "hashedPassword2"
+    }
+    
+```
+
+3. Copie el token generado.
+
+   <img src="assets/img/image.png">
+
+4. Abra su cliente de API (como Postman) y configure Header:
+
+   Recuerda que debes colocar la palabra clave 'Baerer' de la siguiente forma:
+
+```
+Authorization:  Baerer Token generado
+```
+
+Si está utilizando Thunder Client:
+
+1. Debe crear una nueva solicitud.
+2. Vaya a la sección "Headers".
+3. En las cabeceras HTTP, puede ingresar:
+
+```
+Autorización: Baerer Token generado
+```
+
+Asegúrese de reemplazar "Token generado" con el token que copió.
+
 
 
 #### ¡Recordatorio! 🌟
 
-Antes de realizar cualquier consulta, por favor asegúrate de obtener el token de autenticación correspondiente a la colección que deseas acceder. Los tokens de autenticación son esenciales para garantizar la seguridad y la autorización adecuada en nuestro sistema.
+Antes de realizar cualquier consulta, por favor ***asegúrate de obtener el token de autenticación correspondiente al rol que ejerces, pues según el rol se aumentan o limitan las consultas que puedes acceder.*** Los tokens de autenticación son esenciales para garantizar la seguridad y la autorización adecuada en nuestro sistema.
 
-Recuerda seguir estos pasos:
+Hay dos tipos de roles (1 y 2) :
 
-1. Obtener un Token:
+- El rol 1 corresponde al rol de un **admin**, es decir, este personaje **tiene acceso ilimitado a las versiones** `(v1 = 1.0, v2 = 1.1)`;
+- El rol 2 corresponde al rol de un **usuario**, es decir, este personaje **tiene acceso limitado a las versiones** ` (v2 = 1.1)`
 
-   - Visite la siguiente URL en su navegador web o cliente de API: `http://localhost:7777/token/:collection`
-   - Reemplace `:collection` con el nombre de la colección deseada de la lista proporcionada (por ejemplo, "animales", "areas", "bodegas", etc.).
+##### ¡Recuerda también!: que las versiones deben estar especificadas en el header así:
 
-2. Copie el token generado.
-
-3. En las cabeceras HTTP, ingreselo:
-
-   ```
-   Autorización: Token generado
-   ```
-
-Siguiendo estos tres pasos, estará listo para realizar consultas de manera segura y autorizada en nuestra API
-
-Siguiendo estos pasos, garantizamos una experiencia segura y sin problemas al acceder a nuestros recursos! ✨
-
-
+```
+x-api : 1.0 / 1.1
+```
 
 
 
@@ -310,6 +309,8 @@ Para asegurarse que está en la versión correcta **v1** y si está usando Tunde
 
 ```
 x-api : 1.0
+
+Authorization:  Baerer Token generado
 ```
 
 :point_down:  ¡Recuerda! :point_down:
@@ -1308,6 +1309,8 @@ Para asegurarse que está en la versión correcta **v2** y si está usando Tunde
 
 ```
 x-api : 1.1
+
+Authorization:  Baerer Token generado
 ```
 
 :point_down:  ¡Recuerda! :point_down:
@@ -1471,9 +1474,6 @@ Resultado:
 ```
 
 
-
-Estado del proyecto: Incompleto 🎈
-El proyecto pasó por algunos pormenores a la hora de aplicar el login y permisos desde la base de datos y luego creando un token de acceso usando passport-http-bearer, hay commits que se demuestra que se intentó desplegar. En un futuro lo Implementaremos :).
 
 
 
