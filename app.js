@@ -34,10 +34,10 @@ app.use("/habitats", passport.authenticate('bearer', { session: false}) ,appVeri
 
 app.use("/incidentes", passport.authenticate('bearer', { session: false}) ,appVerify, appIncidentes);
 
-app.use("/mantenimiento/v2",passport.authenticate('bearer', { session: false}) , appVerify, appMantenimientoV2);
+app.use("/mantenimiento/v2", appMantenimientoV2);
 app.use("/mantenimientos",passport.authenticate('bearer', { session: false}) , appVerify, appMantenimientos);
 
-app.use("/tipoAnimales/v2", passport.authenticate('bearer', { session: false}) ,appVerify, appTipoAnimalV2);
+app.use("/tipoAnimales/v2",  appTipoAnimalV2);
 app.use("/tipoAnimales", passport.authenticate('bearer', { session: false}) ,appVerify, appTipoAnimal);
 
 app.use("/visitantes",passport.authenticate('bearer', { session: false}) , appVerify, appVisitantes);

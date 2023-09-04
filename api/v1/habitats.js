@@ -39,6 +39,7 @@ export async function postHabitats(req, res) {
     try {
         const db = await con();
         const collection = db.collection('habitats');
+        console.log(req.body);
         await collection.insertOne({ ...req.body });
         res.status(201).json({
             satus: 201,

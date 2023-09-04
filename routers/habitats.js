@@ -3,6 +3,8 @@ import { getAllHabitats, getHabitatById, postHabitats, putHabitats, deleteHabita
 import { getIdHabitats } from '../api/v2/habitat.js';
 import { proxyHabitats, middlewareVerify, DTOData, middlewareParamHabitats } from "../middleware/proxyHabitats.js";
 import { LimitQuery } from "../helpers/config.js";
+import passportHelper from "../helpers/passportHelper.js"
+import { appVerify } from "../helpers/token.js";
 
 const appHabitats = express();
 appHabitats.use(express.json());
@@ -18,14 +20,15 @@ appHabitats.use((req, res, next) => {
         });
     }
 });
+appHabitats.use(passportHelper.authenticate("bearer", {session: false}));
 
 appHabitats.get("/all", middlewareVerify, getAllHabitats);
 appHabitats.get("/:id", middlewareVerify, middlewareParamHabitats,(req, res, next) => {
     const habitatId = req.params.id; 
     getHabitatById(req, res, habitatId)
 });
-appHabitats.post("/post", middlewareVerify, proxyHabitats, DTOData, postHabitats);
-appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, DTOData, async (req, res) => {
+appHabitats.post("/post", middlewareVerify, proxyHabitats, postHabitats);
+appHabitats.put("/update/:id", middlewareVerify, proxyHabitats, async (req, res) => {
     const habitatId = req.params.id; 
     putHabitats(req, res, habitatId)
 });
@@ -49,7 +52,9 @@ appHabitatV2.use((req, res, next) => {
     }
 });
 
-appHabitatV2.get("/capacidad/:id", middlewareVerify, middlewareParamHabitats, (req, res, next) => {
+appHabitatV2.use(passportHelper.authenticate("bearer", {session: false}));
+
+appHabitatV2.get("/capacidad/:id", appVerify, middlewareParamHabitats, (req, res, next) => {
     const habitatid = req.params.id; 
     getIdHabitats(req, res, habitatid)
 });

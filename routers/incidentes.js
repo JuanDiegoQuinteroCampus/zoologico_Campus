@@ -2,6 +2,8 @@ import express from "express";
 import { getAllIncidentes, getIncidenteById, postIncidentes, putIncidentes, deleteIncidentes } from "../api/v1/incidentes.js";
 import { proxyIncidentes, middlewareVerify, DTOData, middlewareParamIncidentes } from "../middleware/proxyIncidentes.js";
 import { LimitQuery } from "../helpers/config.js";
+import passportHelper from "../helpers/passportHelper.js"
+import { appVerify } from "../helpers/token.js";
 
 const appIncidentes = express();
 appIncidentes.use(express.json());
@@ -18,13 +20,14 @@ appIncidentes.use((req, res, next) => {
     }
 });
 
+appIncidentes.use(passportHelper.authenticate("bearer", {session: false}));
 appIncidentes.get("/all", middlewareVerify, getAllIncidentes);
 appIncidentes.get("/:id", middlewareVerify, middlewareParamIncidentes,(req, res, next) => {
     const incidenteId = req.params.id; 
     getIncidenteById(req, res, incidenteId)
 });
-appIncidentes.post("/post", middlewareVerify, proxyIncidentes, DTOData, postIncidentes);
-appIncidentes.put("/update/:id", middlewareVerify, proxyIncidentes, DTOData, async (req, res) => {
+appIncidentes.post("/post", middlewareVerify, proxyIncidentes,  postIncidentes);
+appIncidentes.put("/update/:id", middlewareVerify, proxyIncidentes,  async (req, res) => {
     const incidenteId = req.params.id; 
     putIncidentes(req, res, incidenteId)
 });

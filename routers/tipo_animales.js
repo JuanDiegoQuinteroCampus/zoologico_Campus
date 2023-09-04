@@ -3,6 +3,8 @@ import { getAllTipoAnimal, getTipoAnimalById, postTipoAnimal, putTipoAnimal, del
 import { getIdTipoAni, getPeligroAnimal } from '../api/v2/tipo_animales.js'
 import { proxyTipoAnimal, middlewareVerify, DTOData, middlewareParamTipAni } from "../middleware/proxyTipoAnimal.js";
 import { LimitQuery } from "../helpers/config.js";
+import passportHelper from "../helpers/passportHelper.js"
+import { appVerify } from "../helpers/token.js";
 
 const appTipoAnimal = express();
 appTipoAnimal.use(express.json());
@@ -18,14 +20,14 @@ appTipoAnimal.use((req, res, next) => {
         });
     }
 });
-
+appTipoAnimal.use(passportHelper.authenticate("bearer", {session: false}));
 appTipoAnimal.get("/all", middlewareVerify, getAllTipoAnimal);
 appTipoAnimal.get("/:id", middlewareVerify, middlewareParamTipAni,(req, res, next) => {
     const tipoAnimalId = req.params.id; 
     getTipoAnimalById(req, res, tipoAnimalId)
 });
-appTipoAnimal.post("/post", middlewareVerify, proxyTipoAnimal, DTOData, postTipoAnimal);
-appTipoAnimal.put("/update/:id", middlewareVerify, proxyTipoAnimal, DTOData, async (req, res) => {
+appTipoAnimal.post("/post", middlewareVerify, proxyTipoAnimal,  postTipoAnimal);
+appTipoAnimal.put("/update/:id", middlewareVerify, proxyTipoAnimal,  async (req, res) => {
     const tipoAnimalId = req.params.id; 
     putTipoAnimal(req, res, tipoAnimalId)
 });
@@ -49,8 +51,8 @@ appTipoAnimalV2.use((req, res, next) => {
         });
     }
 });
-
-appTipoAnimalV2.get("/comportamiento/:id", middlewareVerify, middlewareParamTipAni,(req, res, next) => {
+appTipoAnimalV2.use(passportHelper.authenticate("bearer", {session: false}));
+appTipoAnimalV2.get("/comportamiento/:id", appVerify, middlewareParamTipAni,(req, res, next) => {
     const tipoanimalId = req.params.id; 
     getIdTipoAni(req, res, tipoanimalId)
 });

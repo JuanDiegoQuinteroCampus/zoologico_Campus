@@ -2,6 +2,8 @@ import express from "express";
 import { getAllAreas, getAreaById, postAreas, putAreas, deleteAreas } from "../api/v1/areas.js";
 import { proxyAreas, middlewareVerify, DTOData, middlewareParamAreas } from "../middleware/proxyAreas.js";
 import { LimitQuery } from "../helpers/config.js";
+import passportHelper from "../helpers/passportHelper.js"
+// import { appVerify } from "../helpers/token.js";
 
 const appAreas = express();
 appAreas.use(express.json());
@@ -19,13 +21,15 @@ appAreas.use((req, res, next) => {
     }
 });
 
+appAreas.use(passportHelper.authenticate("bearer", {session: false}));
+
 appAreas.get("/all", middlewareVerify, getAllAreas);
 appAreas.get("/:id", middlewareVerify, middlewareParamAreas,(req, res, next) => {
     const areaId = req.params.id; 
     getAreaById(req, res, areaId)
 });
-appAreas.post("/post", middlewareVerify, proxyAreas, DTOData, postAreas);
-appAreas.put("/update/:id", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
+appAreas.post("/post", middlewareVerify, proxyAreas, postAreas);
+appAreas.put("/update/:id", middlewareVerify, proxyAreas, async (req, res) => {
     const areaId = req.params.id; 
     putAreas(req, res, areaId)
 });

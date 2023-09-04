@@ -2,7 +2,8 @@ import express from "express";
 import { getAllVisitantes, getVisitanteById, postVisitantes, putVisitantes, deleteVisitantes } from "../api/v1/visitantes.js";
 import { proxyVisitantes, middlewareVerify, DTOData, middlewareParamVisitantes } from "../middleware/proxyVisitantes.js";
 import { LimitQuery } from "../helpers/config.js";
-
+import passportHelper from "../helpers/passportHelper.js"
+import { appVerify } from "../helpers/token.js";
 const appVisitantes = express();
 appVisitantes.use(express.json());
 appVisitantes.use(LimitQuery());
@@ -17,14 +18,14 @@ appVisitantes.use((req, res, next) => {
         });
     }
 });
-
+appVisitantes.use(passportHelper.authenticate("bearer", {session: false}));
 appVisitantes.get("/all", middlewareVerify, getAllVisitantes);
 appVisitantes.get("/:id", middlewareVerify, middlewareParamVisitantes,(req, res, next) => {
     const visitanteId = req.params.id; 
     getVisitanteById(req, res, visitanteId)
 });
-appVisitantes.post("/post", middlewareVerify, proxyVisitantes, DTOData, postVisitantes);
-appVisitantes.put("/update/:id", middlewareVerify, proxyVisitantes, DTOData, async (req, res) => {
+appVisitantes.post("/post", middlewareVerify, proxyVisitantes,  postVisitantes);
+appVisitantes.put("/update/:id", middlewareVerify, proxyVisitantes,  async (req, res) => {
     const visitanteId = req.params.id; 
     putVisitantes(req, res, visitanteId)
 });

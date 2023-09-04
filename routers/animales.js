@@ -2,6 +2,8 @@ import express from "express";
 import { getAllAnimals, getAnimalById, postAnimal, putAnimal, deleteAnimal } from "../api/v1/animales.js";
 import { proxyAnimales, middlewareVerify, DTOData, middlewareParamAnimales } from "../middleware/proxyAnimales.js";
 import { LimitQuery } from "../helpers/config.js";
+import passportHelper from "../helpers/passportHelper.js"
+// import { appVerify } from "../helpers/token.js";
 
 const appAnimales = express();
 appAnimales.use(express.json());
@@ -17,14 +19,14 @@ appAnimales.use((req, res, next) => {
         });
     }
 });
-
+appAnimales.use(passportHelper.authenticate("bearer", {session: false}));
 appAnimales.get("/all", middlewareVerify, getAllAnimals);
 appAnimales.get("/:id", middlewareVerify, middlewareParamAnimales,(req, res, next) => {
     const animalId = req.params.id; 
     getAnimalById(req, res, animalId)
 });
-appAnimales.post("/post", middlewareVerify, proxyAnimales, DTOData, postAnimal);
-appAnimales.put("/update/:id", middlewareVerify, proxyAnimales, DTOData, async (req, res) => {
+appAnimales.post("/post", middlewareVerify, proxyAnimales , postAnimal);
+appAnimales.put("/update/:id", middlewareVerify, proxyAnimales, async (req, res) => {
     const animalId = req.params.id; 
     putAnimal(req, res, animalId)
 });

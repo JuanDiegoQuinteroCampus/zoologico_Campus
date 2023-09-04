@@ -2,6 +2,8 @@ import express from "express";
 import { getAllBodegas, getBodegaById, postBodegas, putBodegas, deleteBodegas } from "../api/v1/bodegas.js";
 import { proxyBodegas, middlewareVerify, DTOData, middlewareParamBodegas } from "../middleware/proxyBodegas.js";
 import { LimitQuery } from "../helpers/config.js";
+import passportHelper from "../helpers/passportHelper.js"
+import { appVerify } from "../helpers/token.js";
 
 const appBodegas = express();
 appBodegas.use(express.json());
@@ -17,14 +19,15 @@ appBodegas.use((req, res, next) => {
         });
     }
 });
+appBodegas.use(passportHelper.authenticate("bearer", {session: false}));
 
 appBodegas.get("/all", middlewareVerify, getAllBodegas);
 appBodegas.get("/:id", middlewareVerify, middlewareParamBodegas,(req, res, next) => {
     const bodegaId = req.params.id; 
     getBodegaById(req, res, bodegaId)
 });
-appBodegas.post("/post", middlewareVerify, proxyBodegas, DTOData, postBodegas);
-appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
+appBodegas.post("/post", middlewareVerify, proxyBodegas, postBodegas);
+appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, async (req, res) => {
     const bodegaId = req.params.id; 
     putBodegas(req, res, bodegaId)
 });

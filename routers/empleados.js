@@ -26,8 +26,8 @@ appEmpleados.get("/:id", middlewareVerify, middlewareParamEmpleados,(req, res, n
     const empleadoId = req.params.id; 
     getEmpleadoById(req, res, empleadoId)
 });
-appEmpleados.post("/post", middlewareVerify, proxyEmpeados, DTOData, postEmpleados);
-appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, DTOData, async (req, res) => {
+appEmpleados.post("/post", middlewareVerify, proxyEmpeados, postEmpleados);
+appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, async (req, res) => {
     const empleadoId = req.params.id; 
     putEmpleados(req, res, empleadoId)
 });
