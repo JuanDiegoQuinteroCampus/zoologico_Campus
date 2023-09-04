@@ -502,3 +502,85 @@ db.bodegas.insertMany([
         "fecha_revision": ISODate("2023-06-20")
     }    
 ]);
+
+use("db_zoologico");
+db.createCollection("usuarios",{
+    validator:{
+    $jsonSchema:{
+        bsonType: "object",
+        required: ["_id","username", "token", "id_rol"],
+        _id: {
+            bsonType: "number",
+            description: "_id debe ser de tipo int",
+        },
+        username: {
+            bsonType: "string",
+            description: "username debe ser de tipo string",
+        },
+        token: {
+            bsonType: "string",
+            description: "token debe ser de tipo string",
+        },
+        id_rol: {
+            bsonType: "number",
+            description: "id_rol debe ser de tipo int",
+        },
+    }}
+})
+
+
+use("db_zoologico");
+db.createCollection("usuarios",{
+    validator:{
+    $jsonSchema:{
+        bsonType: "object",
+        required: ["_id","username", "password", "token", "id_rol"],
+        properties:{
+            _id: {
+                bsonType: "number",
+                description: "_id debe ser de tipo int",
+            },
+            username: {
+                bsonType: "string",
+                description: "username debe ser de tipo string",
+            },
+            password:{
+                bsonType: "string"
+            },
+            token: {
+                bsonType: "array",
+                description: "token debe ser de tipo array",
+            },
+            id_rol: {
+                bsonType: "number",
+                description: "id_rol debe ser de tipo int",
+            },
+        }
+    }}
+})
+
+
+use("db_zoologico");
+  db.usuarios.insertMany([
+    {
+        "_id": 1,
+        "username": "Juan",
+        "password": "hashedPassword1",
+        "token": [],
+        "id_rol": 2
+      },
+      {
+        "_id": 2,
+        "username": "Vicky",
+        "password": "hashedPassword2",
+        "token": [],
+        "id_rol": 1
+      },
+      {
+        "_id": 3,
+        "username": "Bonny",
+        "password": "hashedPassword3",
+        "token": [],
+        "id_rol": 2
+      }
+  ])
