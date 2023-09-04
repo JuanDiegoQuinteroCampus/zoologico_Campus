@@ -1,504 +1,597 @@
 use("db_zoologico");
 db.createCollection("empleados", {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            required: ["_id", "nombre", "cedula", "fecha_nac", "id_area", "cargo"],
-            properties: {
-                _id: {
-                    bsonType: "number",
-                    description: "_id debe ser de tipo int",
-                },
-                nombre: {
-                    bsonType: "string",
-                    description: "nombre debe ser de tipo string",
-                },
-                cedula: {
-                    bsonType: "number",
-                    description: "cedula debe ser de tipo number",
-                },
-                fecha_nac: {
-                    bsonType: "date",
-                    description: "fecha_nac debe ser de tipo date",
-                },
-                id_area: {
-                    bsonType: "number",
-                    description: "id_area debe ser de tipo number",
-                },
-                cargo: {
-                    bsonType: "string",
-                    description: "cargo debe ser de tipo string",
-                },
-            },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "nombre", "cedula", "fecha_nac", "id_area", "cargo"],
+      properties: {
+        _id: {
+          bsonType: "number",
+          description: "_id debe ser de tipo int",
         },
+        nombre: {
+          bsonType: "string",
+          description: "nombre debe ser de tipo string",
+        },
+        cedula: {
+          bsonType: "number",
+          description: "cedula debe ser de tipo number",
+        },
+        fecha_nac: {
+          bsonType: "date",
+          description: "fecha_nac debe ser de tipo date",
+        },
+        id_area: {
+          bsonType: "number",
+          description: "id_area debe ser de tipo number",
+        },
+        cargo: {
+          bsonType: "string",
+          description: "cargo debe ser de tipo string",
+        },
+      },
     },
+  },
 });
 
 db.empleados.insertMany([
-    {
-        "_id": 1,
-        "nombre": "Juan Pérez",
-        "cedula": 123456789,
-        "fecha_nac": ISODate("1985-10-15"),
-        "id_area": 1,
-        "cargo": "Cuidador"
-    },
-    {
-        "_id": 2,
-        "nombre": "María Rodríguez",
-        "cedula": 987654321,
-        "fecha_nac": ISODate("1990-04-22"),
-        "id_area": 2,
-        "cargo": "Veterinario"
-    },
-    {
-        "_id": 3,
-        "nombre": "Carlos Sánchez",
-        "cedula": 456789123,
-        "fecha_nac": ISODate("1988-07-03"),
-        "id_area": 3,
-        "cargo": "Administrador"
-    }
+  {
+    _id: 1,
+    nombre: "Juan Pérez",
+    cedula: 123456789,
+    fecha_nac: ISODate("1985-10-15"),
+    id_area: 1,
+    cargo: "Cuidador",
+  },
+  {
+    _id: 2,
+    nombre: "María Rodríguez",
+    cedula: 987654321,
+    fecha_nac: ISODate("1990-04-22"),
+    id_area: 2,
+    cargo: "Veterinario",
+  },
+  {
+    _id: 3,
+    nombre: "Carlos Sánchez",
+    cedula: 456789123,
+    fecha_nac: ISODate("1988-07-03"),
+    id_area: 3,
+    cargo: "Administrador",
+  },
 ]);
 
 db.createCollection("areas", {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            required: ["_id", "nombre", "descripcion", "id_encargado"],
-            properties: {
-                _id: {
-                    bsonType: "number",
-                    description: "_id debe ser de tipo int",
-                },
-                nombre: {
-                    bsonType: "string",
-                    description: "nombre debe ser de tipo string",
-                },
-                descripcion: {
-                    bsonType: "string",
-                    description: "descripcion debe ser de tipo string",
-                },
-                id_encargado: {
-                    bsonType: "number",
-                    description: "id_encargado debe ser de tipo number",
-                }
-            },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "nombre", "descripcion", "id_encargado"],
+      properties: {
+        _id: {
+          bsonType: "number",
+          description: "_id debe ser de tipo int",
         },
+        nombre: {
+          bsonType: "string",
+          description: "nombre debe ser de tipo string",
+        },
+        descripcion: {
+          bsonType: "string",
+          description: "descripcion debe ser de tipo string",
+        },
+        id_encargado: {
+          bsonType: "number",
+          description: "id_encargado debe ser de tipo number",
+        },
+      },
     },
+  },
 });
 
 db.areas.insertMany([
-    {
-        "_id": 1,
-        "nombre": "Hábitats de mamíferos",
-        "descripcion": "Área de hábitats para mamíferos",
-        "id_encargado": 1
-    },
-    {
-        "_id": 2,
-        "nombre": "Aviario",
-        "descripcion": "Área de aves exóticas",
-        "id_encargado": 2
-    },
-    {
-        "_id": 3,
-        "nombre": "Zona de juegos",
-        "descripcion": "Área de entretenimiento para niños",
-        "id_encargado": 3
-    }
+  {
+    _id: 1,
+    nombre: "Hábitats de mamíferos",
+    descripcion: "Área de hábitats para mamíferos",
+    id_encargado: 1,
+  },
+  {
+    _id: 2,
+    nombre: "Aviario",
+    descripcion: "Área de aves exóticas",
+    id_encargado: 2,
+  },
+  {
+    _id: 3,
+    nombre: "Zona de juegos",
+    descripcion: "Área de entretenimiento para niños",
+    id_encargado: 3,
+  },
 ]);
 
 use("db_zoologico");
 db.createCollection("tipo_animales", {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            required: ["_id", "nombre", "especie", "descripcion", "comportamiento", "conservacion"],
-            properties: {
-                _id: {
-                    bsonType: "number",
-                    description: "_id debe ser de tipo int",
-                },
-                nombre: {
-                    bsonType: "string",
-                    description: "nombre debe ser de tipo string",
-                },
-                especie: {
-                    bsonType: "string",
-                    description: "especie debe ser de tipo string",
-                },
-                descripcion: {
-                    bsonType: "string",
-                    description: "descripcion debe ser de tipo string",
-                },
-                comportamiento: {
-                    bsonType: "string",
-                    description: "comportamiento debe ser de tipo string",
-                },
-                conservacion: {
-                    bsonType: "string",
-                    description: "conservacion debe ser de tipo string",
-                },
-            },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "_id",
+        "nombre",
+        "especie",
+        "descripcion",
+        "comportamiento",
+        "conservacion",
+      ],
+      properties: {
+        _id: {
+          bsonType: "number",
+          description: "_id debe ser de tipo int",
         },
+        nombre: {
+          bsonType: "string",
+          description: "nombre debe ser de tipo string",
+        },
+        especie: {
+          bsonType: "string",
+          description: "especie debe ser de tipo string",
+        },
+        descripcion: {
+          bsonType: "string",
+          description: "descripcion debe ser de tipo string",
+        },
+        comportamiento: {
+          bsonType: "string",
+          description: "comportamiento debe ser de tipo string",
+        },
+        conservacion: {
+          bsonType: "string",
+          description: "conservacion debe ser de tipo string",
+        },
+      },
     },
+  },
 });
 
 db.tipo_animales.insertMany([
-    {
-        "_id": 1,
-        "nombre": "León",
-        "especie": "Panthera leo",
-        "descripcion": "El león es un felino majestuoso...",
-        "comportamiento": "Los leones viven en manadas...",
-        "conservacion": "En peligro"
-    },
-    {
-        "_id": 2,
-        "nombre": "Aguila Real",
-        "especie": "Aquila chrysaetos",
-        "descripcion": "El águila real es un ave rapaz...",
-        "comportamiento": "Es un depredador solitario...",
-        "conservacion": "Preocupación menor"
-    },
-    {
-        "_id": 3,
-        "nombre": "Elefante Africano",
-        "especie": "Loxodonta africana",
-        "descripcion": "El elefante africano es el animal terrestre más grande...",
-        "comportamiento": "Viven en grupos familiares...",
-        "conservacion": "Vulnerable"
-    }
-])
+  {
+    _id: 1,
+    nombre: "León",
+    especie: "Panthera leo",
+    descripcion: "El león es un felino majestuoso...",
+    comportamiento: "Los leones viven en manadas...",
+    conservacion: "En peligro",
+  },
+  {
+    _id: 2,
+    nombre: "Aguila Real",
+    especie: "Aquila chrysaetos",
+    descripcion: "El águila real es un ave rapaz...",
+    comportamiento: "Es un depredador solitario...",
+    conservacion: "Preocupación menor",
+  },
+  {
+    _id: 3,
+    nombre: "Elefante Africano",
+    especie: "Loxodonta africana",
+    descripcion: "El elefante africano es el animal terrestre más grande...",
+    comportamiento: "Viven en grupos familiares...",
+    conservacion: "Vulnerable",
+  },
+]);
 
 use("db_zoologico");
 db.createCollection("habitats", {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            required: ["_id", "nombre", "id_tipo_animal", "capacidad", "dimensiones"],
-            properties: {
-                _id: {
-                    bsonType: "number",
-                    description: "_id debe ser de tipo int",
-                },
-                nombre: {
-                    bsonType: "string",
-                    description: "nombre debe ser de tipo string",
-                },
-                id_tipo_animal: {
-                    bsonType: "number",
-                    description: "id_tipo_animal debe ser de tipo number",
-                },
-                capacidad: {
-                    bsonType: "number",
-                    description: "capacidad debe ser de tipo number",
-                },
-                dimensiones: {
-                    bsonType: "string",
-                    description: "dimensiones debe ser de tipo string",
-                }
-            },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "nombre", "id_tipo_animal", "capacidad", "dimensiones"],
+      properties: {
+        _id: {
+          bsonType: "number",
+          description: "_id debe ser de tipo int",
         },
+        nombre: {
+          bsonType: "string",
+          description: "nombre debe ser de tipo string",
+        },
+        id_tipo_animal: {
+          bsonType: "number",
+          description: "id_tipo_animal debe ser de tipo number",
+        },
+        capacidad: {
+          bsonType: "number",
+          description: "capacidad debe ser de tipo number",
+        },
+        dimensiones: {
+          bsonType: "string",
+          description: "dimensiones debe ser de tipo string",
+        },
+      },
     },
+  },
 });
 
 db.habitats.insertMany([
-    {
-        "_id": 1,
-        "nombre": "Hábitat de Leones",
-        "id_tipo_animal": 1,
-        "capacidad": 5,
-        "dimensiones": "30m x 30m"
-    },
-    {
-        "_id": 2,
-        "nombre": "Hábitat de Aves Tropicales",
-        "id_tipo_animal": 2,
-        "capacidad": 10,
-        "dimensiones": "20m x 15m"
-    },
-    {
-        "_id": 3,
-        "nombre": "Hábitat de Elefantes",
-        "id_tipo_animal": 1,
-        "capacidad": 10,
-        "dimensiones": "60m x 60m"
-    }
-])
+  {
+    _id: 1,
+    nombre: "Hábitat de Leones",
+    id_tipo_animal: 1,
+    capacidad: 5,
+    dimensiones: "30m x 30m",
+  },
+  {
+    _id: 2,
+    nombre: "Hábitat de Aves Tropicales",
+    id_tipo_animal: 2,
+    capacidad: 10,
+    dimensiones: "20m x 15m",
+  },
+  {
+    _id: 3,
+    nombre: "Hábitat de Elefantes",
+    id_tipo_animal: 1,
+    capacidad: 10,
+    dimensiones: "60m x 60m",
+  },
+]);
 
 db.createCollection("animales", {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            required: ["_id", "nombre", "id_tipo_animal", "dieta", "peso", "id_habitat"],
-            properties: {
-                _id: {
-                    bsonType: "number",
-                    description: "_id debe ser de tipo int",
-                },
-                nombre: {
-                    bsonType: "string",
-                    description: "nombre debe ser de tipo string",
-                },
-                id_tipo_animal: {
-                    bsonType: "number",
-                    description: "id_tipo_animal debe ser de tipo int",
-                },
-                dieta: {
-                    bsonType: "string",
-                    description: "dieta debe ser de tipo string",
-                },
-                peso: {
-                    bsonType: "number",
-                    description: "peso debe ser de tipo number",
-                },
-                id_habitat: {
-                    bsonType: "number",
-                    description: "id_habitat debe ser de tipo number",
-                }
-            },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "_id",
+        "nombre",
+        "id_tipo_animal",
+        "dieta",
+        "peso",
+        "id_habitat",
+      ],
+      properties: {
+        _id: {
+          bsonType: "number",
+          description: "_id debe ser de tipo int",
         },
+        nombre: {
+          bsonType: "string",
+          description: "nombre debe ser de tipo string",
+        },
+        id_tipo_animal: {
+          bsonType: "number",
+          description: "id_tipo_animal debe ser de tipo int",
+        },
+        dieta: {
+          bsonType: "string",
+          description: "dieta debe ser de tipo string",
+        },
+        peso: {
+          bsonType: "number",
+          description: "peso debe ser de tipo number",
+        },
+        id_habitat: {
+          bsonType: "number",
+          description: "id_habitat debe ser de tipo number",
+        },
+      },
     },
+  },
 });
 
 db.animales.insertMany([
-    {
-        "_id": 1,
-        "nombre": "Simba",
-        "id_tipo_animal": 1,
-        "dieta": "Carnívora",
-        "peso": 200,
-        "id_habitat": 1
-    },
-    {
-        "_id": 2,
-        "nombre": "Kiara",
-        "id_tipo_animal": 1,
-        "dieta": "Carnívora",
-        "peso": 150,
-        "id_habitat": 1
-    },
-    {
-        "_id": 3,
-        "nombre": "Ella",
-        "id_tipo_animal": 2,
-        "dieta": "Omnívora",
-        "peso": 2,
-        "id_habitat": 2
-    }
+  {
+    _id: 1,
+    nombre: "Simba",
+    id_tipo_animal: 1,
+    dieta: "Carnívora",
+    peso: 200,
+    id_habitat: 1,
+  },
+  {
+    _id: 2,
+    nombre: "Kiara",
+    id_tipo_animal: 1,
+    dieta: "Carnívora",
+    peso: 150,
+    id_habitat: 1,
+  },
+  {
+    _id: 3,
+    nombre: "Ella",
+    id_tipo_animal: 2,
+    dieta: "Omnívora",
+    peso: 2,
+    id_habitat: 2,
+  },
 ]);
 
 db.createCollection("visitantes", {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            required: ["_id", "nombre", "cedula", "telefono", "num_ticket"],
-            properties: {
-                _id: {
-                    bsonType: "number",
-                    description: "_id debe ser de tipo int",
-                },
-                nombre: {
-                    bsonType: "string",
-                    description: "nombre debe ser de tipo string",
-                },
-                cedula: {
-                    bsonType: "number",
-                    description: "cedula debe ser de tipo number",
-                },
-                telefono: {
-                    bsonType: "string",
-                    description: "telefono debe ser de tipo string",
-                },
-                num_ticket: {
-                    bsonType: "number",
-                    description: "num_ticket debe ser de tipo number",
-                }
-            },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "nombre", "cedula", "telefono", "num_ticket"],
+      properties: {
+        _id: {
+          bsonType: "number",
+          description: "_id debe ser de tipo int",
         },
+        nombre: {
+          bsonType: "string",
+          description: "nombre debe ser de tipo string",
+        },
+        cedula: {
+          bsonType: "number",
+          description: "cedula debe ser de tipo number",
+        },
+        telefono: {
+          bsonType: "string",
+          description: "telefono debe ser de tipo string",
+        },
+        num_ticket: {
+          bsonType: "number",
+          description: "num_ticket debe ser de tipo number",
+        },
+      },
     },
+  },
 });
 
 db.visitantes.insertMany([
-    {
-        "_id": 1,
-        "nombre": "Ana Gómez",
-        "cedula": 234567890,
-        "telefono": "123-456-7890",
-        "num_ticket": 123
-    },
-    {
-        "_id": 2,
-        "nombre": "Luis Martínez",
-        "cedula": 345678901,
-        "telefono": "987-654-3210",
-        "num_ticket": 124
-    },
-    {
-        "_id": 3,
-        "nombre": "María López",
-        "cedula": 456789012,
-        "telefono": "555-123-4567",
-        "num_ticket": 125
-    }
-])
+  {
+    _id: 1,
+    nombre: "Ana Gómez",
+    cedula: 234567890,
+    telefono: "123-456-7890",
+    num_ticket: 123,
+  },
+  {
+    _id: 2,
+    nombre: "Luis Martínez",
+    cedula: 345678901,
+    telefono: "987-654-3210",
+    num_ticket: 124,
+  },
+  {
+    _id: 3,
+    nombre: "María López",
+    cedula: 456789012,
+    telefono: "555-123-4567",
+    num_ticket: 125,
+  },
+]);
 
 db.createCollection("mantenimiento", {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            required: ["_id", "id_area", "fecha_mantenimiento", "descripcion", "id_responsable"],
-            properties: {
-                _id: {
-                    bsonType: "number",
-                    description: "_id debe ser de tipo int",
-                },
-                id_area: {
-                    bsonType: "number",
-                    description: "id_area debe ser de tipo number",
-                },
-                fecha_mantenimiento: {
-                    bsonType: "date",
-                    description: "fecha_mantenimiento debe ser de tipo date",
-                },
-                descripcion: {
-                    bsonType: "string",
-                    description: "descripcion debe ser de tipo string",
-                },
-                id_responsable: {
-                    bsonType: "number",
-                    description: "id_responsable debe ser de tipo number",
-                }
-            },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "_id",
+        "id_area",
+        "fecha_mantenimiento",
+        "descripcion",
+        "id_responsable",
+      ],
+      properties: {
+        _id: {
+          bsonType: "number",
+          description: "_id debe ser de tipo int",
         },
+        id_area: {
+          bsonType: "number",
+          description: "id_area debe ser de tipo number",
+        },
+        fecha_mantenimiento: {
+          bsonType: "date",
+          description: "fecha_mantenimiento debe ser de tipo date",
+        },
+        descripcion: {
+          bsonType: "string",
+          description: "descripcion debe ser de tipo string",
+        },
+        id_responsable: {
+          bsonType: "number",
+          description: "id_responsable debe ser de tipo number",
+        },
+      },
     },
+  },
 });
 
 db.mantenimiento.insertMany([
-    {
-        "_id": 1,
-        "id_area": 1,
-        "fecha_mantenimiento": ISODate("2023-09-01"),
-        "descripcion": "Se hizo mantenimiento a la valla en el habitat de los leones",
-        "id_responsable": 1
-    },
-    {
-        "_id": 2,
-        "id_area": 2,
-        "fecha_mantenimiento": ISODate("2023-08-15"),
-        "descripcion": "Revisión y mantenimiento en los comederos de los pavos reales",
-        "id_responsable": 2
-    },
-    {
-        "_id": 3,
-        "id_area": 3,
-        "fecha_mantenimiento": ISODate("2023-07-10"),
-        "descripcion": "Limpieza en equipos de juegos infantiles",
-        "id_responsable": 3
-    }
+  {
+    _id: 1,
+    id_area: 1,
+    fecha_mantenimiento: ISODate("2023-09-01"),
+    descripcion: "Se hizo mantenimiento a la valla en el habitat de los leones",
+    id_responsable: 1,
+  },
+  {
+    _id: 2,
+    id_area: 2,
+    fecha_mantenimiento: ISODate("2023-08-15"),
+    descripcion:
+      "Revisión y mantenimiento en los comederos de los pavos reales",
+    id_responsable: 2,
+  },
+  {
+    _id: 3,
+    id_area: 3,
+    fecha_mantenimiento: ISODate("2023-07-10"),
+    descripcion: "Limpieza en equipos de juegos infantiles",
+    id_responsable: 3,
+  },
 ]);
 
 db.createCollection("incidentes", {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            required: ["_id", "id_area", "fecha_incidente", "descripcion"],
-            properties: {
-                _id: {
-                    bsonType: "number",
-                    description: "_id debe ser de tipo int",
-                },
-                id_area: {
-                    bsonType: "number",
-                    description: "id_area debe ser de tipo number",
-                },
-                fecha_incidente: {
-                    bsonType: "date",
-                    description: "fecha_incidente debe ser de tipo date",
-                },
-                descripcion: {
-                    bsonType: "string",
-                    description: "descripcion debe ser de tipo string",
-                }
-            },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "id_area", "fecha_incidente", "descripcion"],
+      properties: {
+        _id: {
+          bsonType: "number",
+          description: "_id debe ser de tipo int",
         },
+        id_area: {
+          bsonType: "number",
+          description: "id_area debe ser de tipo number",
+        },
+        fecha_incidente: {
+          bsonType: "date",
+          description: "fecha_incidente debe ser de tipo date",
+        },
+        descripcion: {
+          bsonType: "string",
+          description: "descripcion debe ser de tipo string",
+        },
+      },
     },
+  },
 });
 
 db.incidentes.insertMany([
-    {
-        "_id": 1,
-        "id_area": 2,
-        "fecha_incidente": ISODate("2023-08-05"),
-        "descripcion": "Los comederos de los pavos reales están obstruidos con rams y tierra"
-    },
-    {
-        "_id": 2,
-        "id_area": 1,
-        "fecha_incidente": ISODate("2023-07-20"),
-        "descripcion": "Daño en la valla del hábitat de los leones"
-    },
-    {
-        "_id": 3,
-        "id_area": 3,
-        "fecha_incidente": ISODate("2023-06-10"),
-        "descripcion": "Vomito en el carrusel de la zona de juegos"
-    }    
+  {
+    _id: 1,
+    id_area: 2,
+    fecha_incidente: ISODate("2023-08-05"),
+    descripcion:
+      "Los comederos de los pavos reales están obstruidos con rams y tierra",
+  },
+  {
+    _id: 2,
+    id_area: 1,
+    fecha_incidente: ISODate("2023-07-20"),
+    descripcion: "Daño en la valla del hábitat de los leones",
+  },
+  {
+    _id: 3,
+    id_area: 3,
+    fecha_incidente: ISODate("2023-06-10"),
+    descripcion: "Vomito en el carrusel de la zona de juegos",
+  },
 ]);
 
 db.createCollection("bodegas", {
-    validator: {
-        $jsonSchema: {
-            bsonType: "object",
-            required: ["_id", "nombre", "descripcion", "contenido", "fecha_revision"],
-            properties: {
-                _id: {
-                    bsonType: "number",
-                    description: "_id debe ser de tipo int",
-                },
-                nombre: {
-                    bsonType: "string",
-                    description: "nombre debe ser de tipo string",
-                },
-                descripcion: {
-                    bsonType: "string",
-                    description: "descripcion debe ser de tipo string",
-                },
-                contenido: {
-                    bsonType: "string",
-                    description: "contenido debe ser de tipo string",
-                },
-                fecha_revision: {
-                    bsonType: "date",
-                    description: "fecha_revision debe ser de tipo date",
-                }
-            },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "nombre", "descripcion", "contenido", "fecha_revision"],
+      properties: {
+        _id: {
+          bsonType: "number",
+          description: "_id debe ser de tipo int",
         },
+        nombre: {
+          bsonType: "string",
+          description: "nombre debe ser de tipo string",
+        },
+        descripcion: {
+          bsonType: "string",
+          description: "descripcion debe ser de tipo string",
+        },
+        contenido: {
+          bsonType: "string",
+          description: "contenido debe ser de tipo string",
+        },
+        fecha_revision: {
+          bsonType: "date",
+          description: "fecha_revision debe ser de tipo date",
+        },
+      },
     },
+  },
 });
 
 db.bodegas.insertMany([
-    {
-        "_id": 1,
-        "nombre": "Bodega de Alimentos",
-        "descripcion": "Almacenamiento de alimentos para animales",
-        "contenido": "Carne, frutas, vegetales",
-        "fecha_revision": ISODate("2023-08-10")
-    },
-    {
-        "_id": 2,
-        "nombre": "Bodega de Suministros",
-        "descripcion": "Almacenamiento de suministros varios",
-        "contenido": "Herramientas, materiales de construcción",
-        "fecha_revision": ISODate("2023-07-15")
-    },
-    {
-        "_id": 3,
-        "nombre": "Bodega de Limpieza",
-        "descripcion": "Almacenamiento de productos de limpieza",
-        "contenido": "Detergentes, desinfectantes, escobas, trapeadores, cubetas",
-        "fecha_revision": ISODate("2023-06-20")
-    }    
+  {
+    _id: 1,
+    nombre: "Bodega de Alimentos",
+    descripcion: "Almacenamiento de alimentos para animales",
+    contenido: "Carne, frutas, vegetales",
+    fecha_revision: ISODate("2023-08-10"),
+  },
+  {
+    _id: 2,
+    nombre: "Bodega de Suministros",
+    descripcion: "Almacenamiento de suministros varios",
+    contenido: "Herramientas, materiales de construcción",
+    fecha_revision: ISODate("2023-07-15"),
+  },
+  {
+    _id: 3,
+    nombre: "Bodega de Limpieza",
+    descripcion: "Almacenamiento de productos de limpieza",
+    contenido: "Detergentes, desinfectantes, escobas, trapeadores, cubetas",
+    fecha_revision: ISODate("2023-06-20"),
+  },
 ]);
+
+use("db_zoologico");
+db.createCollection("usuarios", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "username", "password", "id_rol", "tokens"],
+      properties: {
+        _id: {
+          bsonType: "int",
+          description: "ID de usuario (entero)",
+        },
+        username: {
+          bsonType: "string",
+          description: "Nombre de usuario",
+        },
+        password: {
+          bsonType: "string",
+          description: "Contraseña (hash)",
+        },
+        id_rol: {
+          bsonType: "int",
+          description: "ID del rol del usuario (entero)",
+        },
+        tokens: {
+          bsonType: "array",
+          description: "Tokens de acceso generados para el usuario",
+          items: {
+            bsonType: "object",
+            required: ["token"],
+            properties: {
+              token: {
+                bsonType: "string",
+                description: "Token de acceso (cadena)",
+              },
+              expiracion: {
+                bsonType: "date",
+                description: "Fecha de expiración del token",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+});
+
+db.usuarios.insertMany([
+    {
+  "_id": 1,
+  "username": "Juan",
+  "password": "hashedPassword1", 
+  "id_rol": 2, 
+  "tokens": []
+},
+{
+  "_id": 2,
+  "username": "Vicky",
+  "password": "hashedPassword2",
+  "id_rol": 1, 
+  "tokens": []
+},
+{
+  "_id": 3,
+  "username": "Bonny",
+  "password": "hashedPassword3", 
+  "id_rol": 2, 
+  "tokens": []
+}
+])
+

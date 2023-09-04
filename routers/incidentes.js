@@ -1,6 +1,6 @@
 import express from "express";
 import { getAllIncidentes, getIncidenteById, postIncidentes, putIncidentes, deleteIncidentes } from "../api/v1/incidentes.js";
-import { proxyIncidentes, middlewareVerify, DTOData, middlewareParamIncidentes } from "../middleware/proxyIncidentes.js";
+import { proxyIncidentes, middlewareVerify, /* DTOData, */ middlewareParamIncidentes } from "../middleware/proxyIncidentes.js";
 import { LimitQuery } from "../helpers/config.js";
 
 const appIncidentes = express();
@@ -23,8 +23,8 @@ appIncidentes.get("/:id", middlewareVerify, middlewareParamIncidentes,(req, res,
     const incidenteId = req.params.id; 
     getIncidenteById(req, res, incidenteId)
 });
-appIncidentes.post("/post", middlewareVerify, proxyIncidentes, DTOData, postIncidentes);
-appIncidentes.put("/update/:id", middlewareVerify, proxyIncidentes, DTOData, async (req, res) => {
+appIncidentes.post("/post", middlewareVerify, proxyIncidentes, /* DTOData, */ postIncidentes);
+appIncidentes.put("/update/:id", middlewareVerify, proxyIncidentes, /* DTOData, */ async (req, res) => {
     const incidenteId = req.params.id; 
     putIncidentes(req, res, incidenteId)
 });

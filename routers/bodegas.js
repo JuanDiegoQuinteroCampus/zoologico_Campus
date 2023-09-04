@@ -1,6 +1,6 @@
 import express from "express";
 import { getAllBodegas, getBodegaById, postBodegas, putBodegas, deleteBodegas } from "../api/v1/bodegas.js";
-import { proxyBodegas, middlewareVerify, DTOData, middlewareParamBodegas } from "../middleware/proxyBodegas.js";
+import { proxyBodegas, middlewareVerify, /* DTOData, */ middlewareParamBodegas } from "../middleware/proxyBodegas.js";
 import { LimitQuery } from "../helpers/config.js";
 
 const appBodegas = express();
@@ -23,8 +23,8 @@ appBodegas.get("/:id", middlewareVerify, middlewareParamBodegas,(req, res, next)
     const bodegaId = req.params.id; 
     getBodegaById(req, res, bodegaId)
 });
-appBodegas.post("/post", middlewareVerify, proxyBodegas, DTOData, postBodegas);
-appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, DTOData, async (req, res) => {
+appBodegas.post("/post", middlewareVerify, proxyBodegas, /* DTOData, */ postBodegas);
+appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, /* DTOData, */ async (req, res) => {
     const bodegaId = req.params.id; 
     putBodegas(req, res, bodegaId)
 });
