@@ -1,6 +1,6 @@
 import express from "express";
 import { getAllAreas, getAreaById, postAreas, putAreas, deleteAreas } from "../api/v1/areas.js";
-import { proxyAreas, middlewareVerify, /* DTOData, */ middlewareParamAreas } from "../middleware/proxyAreas.js";
+import { proxyAreas, middlewareVerify, DTOData, middlewareParamAreas } from "../middleware/proxyAreas.js";
 import { LimitQuery } from "../helpers/config.js";
 
 const appAreas = express();
@@ -24,8 +24,8 @@ appAreas.get("/:id", middlewareVerify, middlewareParamAreas,(req, res, next) => 
     const areaId = req.params.id; 
     getAreaById(req, res, areaId)
 });
-appAreas.post("/post", middlewareVerify, proxyAreas, /* DTOData, */ postAreas);
-appAreas.put("/update/:id", middlewareVerify, proxyAreas, /* DTOData, */ async (req, res) => {
+appAreas.post("/post", middlewareVerify, proxyAreas, DTOData, postAreas);
+appAreas.put("/update/:id", middlewareVerify, proxyAreas, DTOData, async (req, res) => {
     const areaId = req.params.id; 
     putAreas(req, res, areaId)
 });

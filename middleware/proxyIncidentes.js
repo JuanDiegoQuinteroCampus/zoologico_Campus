@@ -3,13 +3,13 @@ import express from "express";
 import { plainToClass, classToPlain } from 'class-transformer';
 import { validate } from 'class-validator';
 import { validationResult } from 'express-validator';
-/* import { DTO } from "../helpers/token.js"; */
+import { DTO } from "../helpers/token.js";
 import { Router } from "express";
 import { Incidentes } from '../dtocontroller/incidentes.js';
 import { parametro } from '../validator/params.js';
 
 const middlewareVerify = Router();
-/* const DTOData = Router(); */
+const DTOData = Router();
 const proxyIncidentes = express();
 const middlewareParamIncidentes = Router();
 
@@ -33,22 +33,28 @@ proxyIncidentes.use(async (req, res, next) => {
 middlewareVerify.use((req, res, next) => {
   if (!req.rateLimit) return;
   let { payload } = req.data;
-  const modifiedPayload = {
-      ...payload,
-      fecha_incidente: new Date(payload.fecha_incidente)
+  const { iat, exp, ...newPayload } = payload;
+  payload = newPayload;
+  const payloadDateObjects = {
+    ...payload,
+    fecha_incidente: new Date(payload.fecha_incidente)
   };
-  const isEqual = JSON.stringify(modifiedPayload).replace(/\s+/g, '') === JSON.stringify(payload).replace(/\s+/g, '');
+  const Clone = {
+    ...payload,
+    fecha_incidente: new Date(payload.fecha_incidente)
+  };
+  const Verify = JSON.stringify(Clone).replace(/\s+/g, '') === JSON.stringify(payloadDateObjects).replace(/\s+/g, '');
   req.data = undefined;
-  if (!isEqual) {
-      console.log("No Autorizado");
-      res.status(406).send({ status: 406, message: "No Autorizado" });
+  if (!Verify) {
+    console.log("No Autorizado");
+    res.status(406).send({ status: 406, message: "No Autorizado" });
   } else {
-      console.log("Autorizado");
-      next();
+    console.log("Autorizado");
+    next();
   }
 });
 
-/* DTOData.use(async (req, res, next) => {
+DTOData.use(async (req, res, next) => {
   try {
     let data = plainToClass(DTO("incidentes").class, req.body);
     await validate(data);
@@ -59,7 +65,7 @@ middlewareVerify.use((req, res, next) => {
     res.status(err.status).send(err)
   }
 });
- */
+
 middlewareParamIncidentes.use(parametro, (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
@@ -68,7 +74,7 @@ middlewareParamIncidentes.use(parametro, (req, res, next) => {
 
 export {
   middlewareVerify,
-/*   DTOData, */
+  DTOData,
   proxyIncidentes,
   middlewareParamIncidentes
 };
