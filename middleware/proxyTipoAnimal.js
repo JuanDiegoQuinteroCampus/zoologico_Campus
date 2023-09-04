@@ -3,7 +3,7 @@ import express from "express";
 import { plainToClass, classToPlain } from 'class-transformer';
 import { validate } from 'class-validator';
 import { validationResult } from 'express-validator';
-import { DTO } from "../helpers/token.js";
+// import { DTO } from "../helpers/token.js";
 import { Router } from "express";
 import { TipoAnimales } from '../dtocontroller/tipo_animales.js';
 import { parametro } from '../validator/params.js';
