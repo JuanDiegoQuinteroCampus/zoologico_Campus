@@ -169,9 +169,9 @@ Para esto, puede usar el comando `npm i` desde la terminal.
 
 Siga estos pasos para instalar y ejecutar el proyecto:
 
-1. Clone este repositorio en su máquina local. `https://github.com/VickyMontanezCampus/zoologico_Campus.git`
+1. Clone este repositorio en su máquina local. `git clone https://github.com/VickyMontanezCampus/zoologico_Campus.git`
 
-2. Abra una terminal y navegue hasta la carpeta del proyecto.
+2. Abra una terminal y navegue hasta la carpeta del proyecto. `cd zoologico_Campus` y Se abre VsCode `. code`
 
 3. Inicie el servidor usando el comando `npm run dev`.
 
