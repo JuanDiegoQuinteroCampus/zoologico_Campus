@@ -177,9 +177,11 @@ Siga estos pasos para instalar y ejecutar el proyecto:
 
 4. En otra terminal, sin cerrar la anterior, compile el archivo `tsconfig.json` con `npm run tsc` en otra consola.
 
-5. Acceda a la carpeta `db` en su entorno de MongoDB y ejecute el contenido del archivo `zoo.mongodb` para configurar la base de datos y las colecciones (solo es necesario darle Run).
+5. Para que la base de datos con mongoAtlas funcione, puede utilizar la extension `MongoDB for VS Code` se debe acceder al playground a través del Conecction String dado por Atlas de esta forma: `mongodb+srv://username:<password>@cluster0.zth9y42.mongodb.net/
 
-6. Proceda con el paso [Generar Tokens](#generar-tokens) para poder utilizar los puntos finales.
+6. Acceda a la carpeta `db` en su entorno de MongoDB y ejecute el contenido del archivo `zoo.mongodb` (Teniendo en cuenta que debe estar conecctado con el playground anterior) para configurar la base de datos y las colecciones (solo es necesario darle Run).
+
+7. Proceda con el paso [Generar Tokens](#generar-tokens) para poder utilizar los puntos finales.
 
 
 
