@@ -1,6 +1,6 @@
 import express from "express";
 import { getAllAnimals, getAnimalById, postAnimal, putAnimal, deleteAnimal } from "../api/v1/animales.js";
-import { proxyAnimales, middlewareVerify, DTOData, middlewareParamAnimales } from "../middleware/proxyAnimales.js";
+import { proxyAnimales, middlewareVerify, /* DTOData, */ middlewareParamAnimales } from "../middleware/proxyAnimales.js";
 import { LimitQuery } from "../helpers/config.js";
 
 const appAnimales = express();
@@ -23,8 +23,8 @@ appAnimales.get("/:id", middlewareVerify, middlewareParamAnimales,(req, res, nex
     const animalId = req.params.id; 
     getAnimalById(req, res, animalId)
 });
-appAnimales.post("/post", middlewareVerify, proxyAnimales, DTOData, postAnimal);
-appAnimales.put("/update/:id", middlewareVerify, proxyAnimales, DTOData, async (req, res) => {
+appAnimales.post("/post", middlewareVerify, proxyAnimales, /* DTOData, */ postAnimal);
+appAnimales.put("/update/:id", middlewareVerify, proxyAnimales,/*  DTOData, */ async (req, res) => {
     const animalId = req.params.id; 
     putAnimal(req, res, animalId)
 });
