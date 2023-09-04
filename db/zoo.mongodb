@@ -525,49 +525,73 @@ db.bodegas.insertMany([
   },
 ]);
 
+use("db_zoologico");
 db.createCollection("usuarios", {
-    validator: {
-      $jsonSchema: {
-        bsonType: "object",
-        required: ["_id", "username", "password", "id_rol", "tokens"],
-        properties: {
-          _id: {
-            bsonType: "int",
-            description: "ID de usuario (entero)",
-          },
-          username: {
-            bsonType: "string",
-            description: "Nombre de usuario",
-          },
-          password: {
-            bsonType: "string",
-            description: "Contraseña (hash)",
-          },
-          id_rol: {
-            bsonType: "int",
-            description: "ID del rol del usuario (entero)",
-          },
-          tokens: {
-            bsonType: "array",
-            description: "Tokens de acceso generados para el usuario",
-            items: {
-              bsonType: "object",
-              required: ["token"],
-              properties: {
-                token: {
-                  bsonType: "string",
-                  description: "Token de acceso (cadena)",
-                },
-                expiracion: {
-                  bsonType: "date",
-                  description: "Fecha de expiración del token",
-                },
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["_id", "username", "password", "id_rol", "tokens"],
+      properties: {
+        _id: {
+          bsonType: "int",
+          description: "ID de usuario (entero)",
+        },
+        username: {
+          bsonType: "string",
+          description: "Nombre de usuario",
+        },
+        password: {
+          bsonType: "string",
+          description: "Contraseña (hash)",
+        },
+        id_rol: {
+          bsonType: "int",
+          description: "ID del rol del usuario (entero)",
+        },
+        tokens: {
+          bsonType: "array",
+          description: "Tokens de acceso generados para el usuario",
+          items: {
+            bsonType: "object",
+            required: ["token"],
+            properties: {
+              token: {
+                bsonType: "string",
+                description: "Token de acceso (cadena)",
+              },
+              expiracion: {
+                bsonType: "date",
+                description: "Fecha de expiración del token",
               },
             },
           },
         },
       },
     },
-  });
+  },
+});
 
-  
+db.usuarios.insertMany([
+    {
+  "_id": 1,
+  "username": "Juan",
+  "password": "hashedPassword1", 
+  "id_rol": 2, 
+  "tokens": []
+},
+{
+  "_id": 2,
+  "username": "Vicky",
+  "password": "hashedPassword2",
+  "id_rol": 1, 
+  "tokens": []
+},
+{
+  "_id": 3,
+  "username": "Bonny",
+  "password": "hashedPassword3", 
+  "id_rol": 2, 
+  "tokens": []
+}
+])
+
