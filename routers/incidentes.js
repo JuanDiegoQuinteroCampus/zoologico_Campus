@@ -21,17 +21,17 @@ appIncidentes.use((req, res, next) => {
 });
 
 appIncidentes.use(passportHelper.authenticate("bearer", {session: false}));
-appIncidentes.get("/all", middlewareVerify, getAllIncidentes);
-appIncidentes.get("/:id", middlewareVerify, middlewareParamIncidentes,(req, res, next) => {
+appIncidentes.get("/all",  getAllIncidentes);
+appIncidentes.get("/:id",  middlewareParamIncidentes,(req, res, next) => {
     const incidenteId = req.params.id; 
     getIncidenteById(req, res, incidenteId)
 });
-appIncidentes.post("/post", middlewareVerify, proxyIncidentes,  postIncidentes);
-appIncidentes.put("/update/:id", middlewareVerify, proxyIncidentes,  async (req, res) => {
+appIncidentes.post("/post",  proxyIncidentes,  postIncidentes);
+appIncidentes.put("/update/:id",  proxyIncidentes,  async (req, res) => {
     const incidenteId = req.params.id; 
     putIncidentes(req, res, incidenteId)
 });
-appIncidentes.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appIncidentes.delete("/delete/:id", async (req, res) => {
     const incidenteId = req.params.id; 
     deleteIncidentes(req, res, incidenteId)
 });

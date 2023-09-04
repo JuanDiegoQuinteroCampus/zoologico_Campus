@@ -21,17 +21,17 @@ appBodegas.use((req, res, next) => {
 });
 appBodegas.use(passportHelper.authenticate("bearer", {session: false}));
 
-appBodegas.get("/all", middlewareVerify, getAllBodegas);
-appBodegas.get("/:id", middlewareVerify, middlewareParamBodegas,(req, res, next) => {
+appBodegas.get("/all",  getAllBodegas);
+appBodegas.get("/:id", middlewareParamBodegas,(req, res, next) => {
     const bodegaId = req.params.id; 
     getBodegaById(req, res, bodegaId)
 });
-appBodegas.post("/post", middlewareVerify, proxyBodegas, postBodegas);
-appBodegas.put("/update/:id", middlewareVerify, proxyBodegas, async (req, res) => {
+appBodegas.post("/post",  proxyBodegas,  postBodegas, );
+appBodegas.put("/update/:id", proxyBodegas, async (req, res) => {
     const bodegaId = req.params.id; 
     putBodegas(req, res, bodegaId)
 });
-appBodegas.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appBodegas.delete("/delete/:id", async (req, res) => {
     const bodegaId = req.params.id; 
     deleteBodegas(req, res, bodegaId)
 });

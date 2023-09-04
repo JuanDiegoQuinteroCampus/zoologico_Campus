@@ -21,17 +21,17 @@ appEmpleados.use((req, res, next) => {
 });
 appEmpleados.use(passportHelper.authenticate("bearer", {session: false}));
 
-appEmpleados.get("/all", middlewareVerify, getAllEmpleado);
-appEmpleados.get("/:id", middlewareVerify, middlewareParamEmpleados,(req, res, next) => {
+appEmpleados.get("/all", getAllEmpleado);
+appEmpleados.get("/:id", middlewareParamEmpleados,(req, res, next) => {
     const empleadoId = req.params.id; 
     getEmpleadoById(req, res, empleadoId)
 });
-appEmpleados.post("/post", middlewareVerify, proxyEmpeados, postEmpleados);
-appEmpleados.put("/update/:id", middlewareVerify, proxyEmpeados, async (req, res) => {
+appEmpleados.post("/post",  proxyEmpeados, postEmpleados);
+appEmpleados.put("/update/:id",  proxyEmpeados, async (req, res) => {
     const empleadoId = req.params.id; 
     putEmpleados(req, res, empleadoId)
 });
-appEmpleados.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appEmpleados.delete("/delete/:id",  async (req, res) => {
     const empleadoId = req.params.id; 
     deleteEmpleados(req, res, empleadoId)
 });
