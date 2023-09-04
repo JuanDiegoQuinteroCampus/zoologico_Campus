@@ -503,30 +503,6 @@ db.bodegas.insertMany([
     }    
 ]);
 
-use("db_zoologico");
-db.createCollection("usuarios",{
-    validator:{
-    $jsonSchema:{
-        bsonType: "object",
-        required: ["_id","username", "token", "id_rol"],
-        _id: {
-            bsonType: "number",
-            description: "_id debe ser de tipo int",
-        },
-        username: {
-            bsonType: "string",
-            description: "username debe ser de tipo string",
-        },
-        token: {
-            bsonType: "string",
-            description: "token debe ser de tipo string",
-        },
-        id_rol: {
-            bsonType: "number",
-            description: "id_rol debe ser de tipo int",
-        },
-    }}
-})
 
 
 use("db_zoologico");

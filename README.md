@@ -54,7 +54,7 @@ Al administrar un zoológico, abordamos múltiples aspectos cruciales para un fu
 
 
 
-Al observar la relevancia de estos aspectos, hemos optado por  dirigir nuestra atención hacia la identificación, mitigación de riesgos, y la la capacidad de abordar eficazmente cualquier desafío que pueda surgir en las instalaciones y hábitats del zoológico.
+Al observar la relevancia de estos aspectos, hemos optado por  dirigir nuestra atención hacia la identificación, mitigación de riesgos, y la capacidad de abordar eficazmente cualquier desafío que pueda surgir en las instalaciones y hábitats del zoológico.
 
 
 
@@ -86,10 +86,17 @@ El Sistema de Gestión de Mantenimiento y Detección de Problemas ofrece varias 
 - **Detección Temprana de Problemas:** Los incidentes y problemas pueden ser identificados y abordados en etapas tempranas, minimizando su impacto y reduciendo el riesgo para visitantes, personal y animales.
 
 
+## Instalación de Dependencias y Operación 🚀
 
-## Configuración ⚙️
+Siga estos pasos para instalar y ejecutar el proyecto:
 
-Antes de comenzar, asegúrese de haber configurado su proyecto correctamente.
+1. Clone este repositorio en su máquina local (Consola windows, Linux, Mac) `git clone https://github.com/VickyMontanezCampus/zoologico_Campus.git`
+
+2. Desde esa misma terminal y navegue hasta la carpeta del proyecto. `cd zoologico_Campus` y abre VsCode `code .`
+
+#### Configuración ⚙️
+
+Antes de continuar, asegúrese de haber configurado su proyecto correctamente.
 
 ### :red_circle: Archivo "`tsconfig.json`"
 
@@ -161,25 +168,27 @@ Asegúrese de tener lo siguiente instalado antes de iniciar el proyecto:
   }
 ```
 
-Para esto, puede usar el comando `npm i` desde la terminal.
-
-
-
-## Instalación de Dependencias y Operación 🚀
-
-Siga estos pasos para instalar y ejecutar el proyecto:
-
-1. Clone este repositorio en su máquina local. `git clone https://github.com/VickyMontanezCampus/zoologico_Campus.git`
-
-2. Abra una terminal y navegue hasta la carpeta del proyecto. `cd zoologico_Campus` y Se abre VsCode `. code`
+Para esto, puede usar el comando `npm i` desde la terminal de VsCode
 
 3. Inicie el servidor usando el comando `npm run dev`.
 
-4. En otra terminal, sin cerrar la anterior, compile el archivo `tsconfig.json` con `npm run tsc` en otra consola.
+4. En otra terminal, sin cerrar la anterior, compile el archivo `tsconfig.json` con el comando `npm run tsc` en otra consola.
 
-5. Para que la base de datos con mongoAtlas funcione, puede utilizar la extension `MongoDB for VS Code` se debe acceder al playground a través del Conecction String dado por Atlas de esta forma: `mongodb+srv://username:<password>@cluster0.zth9y42.mongodb.net/`
+5. Para que la base de datos con mongoAtlas funcione, puede utilizar la extension `MongoDB for VS Code`.
 
-6. Acceda a la carpeta `db` en su entorno de MongoDB y ejecute el contenido del archivo `zoo.mongodb` (Teniendo en cuenta que debe estar conecctado con el playground anterior) para configurar la base de datos y las colecciones (solo es necesario darle Run).
+6. Abre la extension y agrega una nueva conexión ( + )
+
+7. Luego de esto, selecciona la opcion 'Connect with Connection String' y pega el link del cluster así
+
+    ```
+        mongodb+srv://username:<password>@cluster0.zth9y42.mongodb.net/
+
+        Example:
+
+        mongodb+srv://JuaVi:jijiji12345@cluster0.zth9y42.mongodb.net/
+    ```
+
+8. Acceda al archivo `db / zoo.mongodb` en su entorno de MongoDB y ejecute el contenido. Teniendo en cuenta que debe estar conectado con el playground anterior (Darle click en la parte de arriba para conectar con el cluster) para configurar la base de datos y las colecciones; solo es necesario darle Run.
 
    
 
@@ -231,7 +240,7 @@ x-api : 1.0 / 1.1
 
 ## Login (passport-http-bearer)🔑
 
-El token se genera como una llave de acceso según los usuarios YA registrados en la base de datos, esto se hace a partir de la siguiente URL:
+El token se genera como una llave de acceso según los usuarios YA registrados en la base de datos, esto se hace a partir de los siguientes pasos:
 
 1.  En su navegador web o cliente de API, ingrese la siguiente URL con el nombre de la colección deseada para obtener un token:
 
@@ -244,6 +253,8 @@ http://localhost:7777/login
 2. Abra su cliente de API (como Postman O ThunderClient) y debes pasar el siguiente body:
 
 ```
+Methodo: GET
+
 Sintaxis:
     {
         "username": "RegistedUsername",
@@ -252,8 +263,8 @@ Sintaxis:
 
 Example: 
     {
-		"username": "Vicky",
-		"password": "hashedPassword2"
+		"username": "Admin",
+		"password": "contraseña1"
     }
     
 ```
@@ -267,7 +278,7 @@ Example:
    Recuerda que debes colocar la palabra clave 'Baerer' de la siguiente forma:
 
 ```
-Authorization:  Baerer Token generado
+Authorization:  Bearer Token generado
 ```
 
 Si está utilizando Thunder Client:
@@ -277,7 +288,7 @@ Si está utilizando Thunder Client:
 3. En las cabeceras HTTP, puede ingresar:
 
 ```
-Autorización: Baerer Token generado
+Autorización: Bearer Token generado
 ```
 
 Asegúrese de reemplazar "Token generado" con el token que copió.
@@ -310,7 +321,7 @@ Para asegurarse que está en la versión correcta **v1** y si está usando Tunde
 ```
 x-api : 1.0
 
-Authorization:  Baerer Token generado
+Authorization:  Bearer Token generado
 ```
 
 :point_down:  ¡Recuerda! :point_down:
@@ -1310,7 +1321,7 @@ Para asegurarse que está en la versión correcta **v2** y si está usando Tunde
 ```
 x-api : 1.1
 
-Authorization:  Baerer Token generado
+Authorization:  Bearer Token generado
 ```
 
 :point_down:  ¡Recuerda! :point_down:
@@ -1486,3 +1497,5 @@ Juan Diego Quintero ArgÜello
 https://github.com/JuanDiegoQuinteroCampus
 
 https://github.com/VickyMontanezCampus
+
+WorkSpace Notion: https://www.notion.so/Zoo-Proyecto-5aaa6c3abadb4528a8779c3d3a59e936

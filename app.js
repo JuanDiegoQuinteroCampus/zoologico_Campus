@@ -19,7 +19,7 @@ let config = JSON.parse(process.env.MY_CONFIG);
 app.use(express.json());
 app.use(passport.initialize());
 
-app.use("/token", appToken);
+app.use("/login", appToken);
 app.use("/animales", passport.authenticate('bearer', { session: false}) ,appVerify, appAnimales);
 app.use("/areas", passport.authenticate('bearer', { session: false}) ,appVerify, appAreas);
 app.use("/bodegas", passport.authenticate('bearer', { session: false}) ,appVerify, appBodegas);
