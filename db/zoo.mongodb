@@ -564,22 +564,15 @@ use("db_zoologico");
   db.usuarios.insertMany([
     {
         "_id": 1,
-        "username": "Juan",
-        "password": "hashedPassword1",
-        "token": [],
-        "id_rol": 2
-      },
-      {
-        "_id": 2,
-        "username": "Vicky",
-        "password": "hashedPassword2",
+        "username": "Admin",
+        "password": "contraseña1",
         "token": [],
         "id_rol": 1
       },
       {
-        "_id": 3,
-        "username": "Bonny",
-        "password": "hashedPassword3",
+        "_id": 2,
+        "username": "User",
+        "password": "contraseña2",
         "token": [],
         "id_rol": 2
       }
