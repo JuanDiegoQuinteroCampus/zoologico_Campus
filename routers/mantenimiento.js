@@ -22,17 +22,17 @@ appMantenimientos.use((req, res, next) => {
 
 
 appMantenimientos.use(passportHelper.authenticate("bearer", {session: false}));
-appMantenimientos.get("/all", middlewareVerify, getAllMantenimientos);
-appMantenimientos.get("/:id", middlewareVerify, middlewareParamMante,(req, res, next) => {
+appMantenimientos.get("/all",  getAllMantenimientos);
+appMantenimientos.get("/:id", middlewareParamMante,(req, res, next) => {
     const mantenimientoId = req.params.id; 
     getMantenimientoById(req, res, mantenimientoId)
 });
-appMantenimientos.post("/post", middlewareVerify, proxyMantenimientos,  postMantenimiento);
-appMantenimientos.put("/update/:id", middlewareVerify, proxyMantenimientos,  async (req, res) => {
+appMantenimientos.post("/post",  proxyMantenimientos,  postMantenimiento);
+appMantenimientos.put("/update/:id",  proxyMantenimientos,  async (req, res) => {
     const mantenimientoId = req.params.id; 
     putMantenimiento(req, res, mantenimientoId)
 });
-appMantenimientos.delete("/delete/:id", middlewareVerify, async (req, res) => {
+appMantenimientos.delete("/delete/:id",  async (req, res) => {
     const mantenimientoId = req.params.id; 
     deleteMantenimiento(req, res, mantenimientoId)
 });
