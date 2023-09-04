@@ -2,6 +2,8 @@ import express from "express";
 import { getAllEmpleado, getEmpleadoById, postEmpleados, putEmpleados, deleteEmpleados } from "../api/v1/empleados.js";
 import { proxyEmpeados, middlewareVerify, DTOData, middlewareParamEmpleados } from "../middleware/proxyEmpeados.js";
 import { LimitQuery } from "../helpers/config.js";
+import passportHelper from "../helpers/passportHelper.js"
+import { appVerify } from "../helpers/token.js";
 
 const appEmpleados = express();
 appEmpleados.use(express.json());
@@ -17,6 +19,7 @@ appEmpleados.use((req, res, next) => {
         });
     }
 });
+appEmpleados.use(passportHelper.authenticate("bearer", {session: false}));
 
 appEmpleados.get("/all", middlewareVerify, getAllEmpleado);
 appEmpleados.get("/:id", middlewareVerify, middlewareParamEmpleados,(req, res, next) => {
@@ -47,7 +50,8 @@ appEmpleadosV2.use((req, res, next) => {
         });
     }
 });
-appEmpleadosV2.get("/area/:id", middlewareVerify, middlewareParamEmpleados,(req, res, next) => {
+appEmpleadosV2.use(passportHelper.authenticate("bearer", {session: false}));
+appEmpleadosV2.get("/area/:id" , appVerify, middlewareParamEmpleados,(req, res, next) => {
     const empleareasId = req.params.id; 
     getEmpleadoById(req, res, empleareasId)
 });
